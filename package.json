@@ -1,0 +1,35 @@
+{
+  "name": "ADEL-web",
+  "version": "1.0.0",
+  "description": "Web Client ADEL",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js",
+    "prod": "npm run build && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ventamovil/ADEL-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ventamovil/ADEL-web/issues"
+  },
+  "homepage": "https://github.com/ventamovil/ADEL-web#readme",
+  "dependencies": {
+    "alertifyjs": "^1.11.2",
+    "axios": "^0.18.1",
+    "bulma": "^0.7.5",
+    "next": "^7.0.2",
+    "next-routes": "^1.4.2",
+    "react": "^16.5.2",
+    "react-big-calendar": "^0.20.3",
+    "react-dom": "^16.5.2",
+    "react-flatpickr": "^3.6.4",
+    "react-select": "^2.1.2"
+  }
+}

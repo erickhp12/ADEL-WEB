@@ -1,0 +1,25 @@
+.card{
+    margin:1.5em;
+}
+.card-content {
+    overflow-x: auto;
+  }
+.img-50{
+    max-width: 25px;
+    max-height: 25px;
+}
+
+.card-50 {
+    width:50%;
+    margin: auto !important;
+    margin-top: 1.5em !important;
+}
+
+.card-content-50 {
+    overflow-x: auto;
+}
+
+.img-50{
+    max-width: 25px;
+    max-height: 25px;
+}

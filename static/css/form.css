@@ -1,0 +1,22 @@
+.form-card-50{
+    width:50%;
+}
+.form-card-60{
+    width:60%;
+}
+.form-card-70{
+    width:70%;
+}
+.form-card-80{
+    width: 80%;
+    margin: auto !important;
+    margin-top: 1.5em !important;
+}
+.form-card-90{
+    width:90%;
+}
+
+.form-card-50, .form-card-60, .form-card-70, .form-card-80, .form-card-90{
+    margin: auto !important;
+    margin-top: 1.5em !important;
+}
