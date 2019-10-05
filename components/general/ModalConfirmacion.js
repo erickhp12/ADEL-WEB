@@ -46,7 +46,7 @@ class ModalConfirmacion extends Component {
             color = "" // is-primary, is-link, is-info, is-success, is-warning, is-danger, is-dark
         } = this.props;
         return (
-            <div className={`modal is-success ${this.state.activo}`}>
+            <div className={`modal ${this.state.activo}`}>
                 <div className="modal-background" onClick={this.cerrarModal} />
                 <div className="modal-content">
                     <article className={`message ${color} ${this.state.activo && 'activo'}`}>
@@ -88,6 +88,9 @@ class ModalConfirmacion extends Component {
                     .activo {
                         animation-name: animScale;
                         animation-duration: 0.25s;
+                    }
+                    .message-body{
+                        background: #fff;
                     }
                     @keyframes animScale {
                         0% {

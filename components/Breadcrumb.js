@@ -33,7 +33,7 @@ const Breadcrumb = ( { items = [{name: "", url:"/", active:false, title:""}]} ) 
         <div className="column is-4 menu-title">
             <h1>{items[0].title}&nbsp;&nbsp;
             {
-                items[0].total > 1 ?
+                items[0].total > 0 ?
                 <span className="tag is-info">{items[0].total}</span>:
                 <span></span>
             }

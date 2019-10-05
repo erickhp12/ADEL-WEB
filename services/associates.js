@@ -6,6 +6,8 @@ export const getAssociates = (params = {}) => Api().get('/api/associates/', { pa
 
 export const getAssociate = (id) => Api().get(`/api/associates/${id}`)
 
+export const deleteAssociate = (id) => Api().delete(`/api/associates/${id}/`)
+
 export const getAppointmentsAssociate = (id, params = {}) => Api().get(`/api/associates/appointments/${id}/`, { params })
 
 export const addAssociate = (data) => Api().post(`/api/associates/`, data)

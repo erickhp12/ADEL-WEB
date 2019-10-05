@@ -1,16 +1,26 @@
 import Layout from '../../../components/layouts/Layout'
 import { Link } from '../../../routes'
-import { getUsers } from '../../../services/users'
 import Paginacion from '../../../components/Paginacion'
-import { hasPermission } from '../../../components/permission'
 import { friendlyDateformat } from '../../../filters/filters'
+import { getUsers, deleteUser } from '../../../services/users'
+import { hasPermission } from '../../../components/permission'
+import ModalConfirmacion from '../../../components/general/ModalConfirmacion'
 
 export default class extends React.Component{
+    permisoAgregar = 22
+    permisoEditar = 23
+    permisoEliminar = 24
+
     state = {
         objects:[],
         total_records:0,
         page_limit:20,
-        texto_busqueda:null
+        texto_busqueda:null,
+        textoModal:'',
+        tituloModal:'',
+        textoConfirmacion:'',
+        item:null,
+        colorModal:'is-danger'
     }
 
     async componentDidMount() {
@@ -60,15 +70,42 @@ export default class extends React.Component{
         this.setState({ texto_busqueda })
     }
 
+    abrirModal = (obj) => {
+        let modalVisible = true
+        let textoConfirmacion = 'Confirmar'
+        let textoModal = '¿Estás seguro de borrar este usuario? - ' + obj.first_name + " " + obj.last_name
+        let tituloModal = 'Eliminar usuario'
+        let item = obj.id
+        this.setState({ modalVisible, textoModal, tituloModal, textoConfirmacion, item })
+      }
+
+    async eliminaItem(item){
+        let objects = this.state.objects
+        let item_index = objects.findIndex(o => o.id == item)
+        objects.splice(item_index,1)
+        await deleteUser(item)
+      }
+
+    cerrarModal = () => {
+        this.setState({ modalVisible: false });
+    }
+
     render(){
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false, title:"USUARIOS",total:this.state.total_records },
+            { 
+                name: "ADEL", url: "admin", active: false,
+                title:"USUARIOS",total:this.state.total_records },
             { name: "Usuarios", url: "", active: true },
         ]
+        const { 
+            modalVisible, textoModal, colorModal, tituloModal, textoConfirmacion, item
+        } = this.state
+
         return (
             <Layout title="Usuarios" selectedMenu="users" breadcrumb={ breadcrumb }>
                 <div className="card">
                     <div className="card-content">
+                        {hasPermission(this.permisoAgregar)?
                         <Link route="add_user">
                             <a className="button is-info is-pulled-left is-radiusless">
                                 <span className="icon is-small">
@@ -77,6 +114,7 @@ export default class extends React.Component{
                                 <span>Agregar</span>
                             </a>
                         </Link>
+                        :<a></a>}
                         <div className="field has-addons is-pulled-right">
                             <div className="control">
                                 <input
@@ -114,7 +152,7 @@ export default class extends React.Component{
                                     <td>{ friendlyDateformat(obj.date_joined)}</td>
                                     <td>
                                         <p className="buttons is-centered">
-                                            { hasPermission(17)?
+                                            { hasPermission(this.permisoAgregar)?
                                             <Link route="edit_user" params={{ id: obj.id }}>
                                                 <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
                                                     <span className="icon is-small">
@@ -123,6 +161,14 @@ export default class extends React.Component{
                                                     <span>Editar</span>
                                                 </a>
                                             </Link>
+                                            :<a></a>}
+                                            { hasPermission(this.permisoEliminar)?
+                                            <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger is-outlined tooltip" data-tooltip="Eliminar">
+                                                <span className="icon is-small">
+                                                    <i className="fas fa-trash"></i>
+                                                </span>
+                                                <span>Eliminar</span>
+                                            </button>
                                             :<a></a>}
                                         </p>
                                     </td>
@@ -143,6 +189,15 @@ export default class extends React.Component{
                 </div>
                 <style jsx>{`
                 `}</style>
+                <ModalConfirmacion
+                    activo={modalVisible}
+                    titulo={tituloModal}
+                    contenido={textoModal}
+                    botonOkTexto={textoConfirmacion}
+                    color={colorModal}
+                    botonOkClick={(e) =>this.eliminaItem(item)}
+                    cerrarModal={this.cerrarModal}
+                />
             </Layout>
         )
     }

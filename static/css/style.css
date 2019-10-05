@@ -2,7 +2,22 @@
     margin: 0px;
     padding: 0px;
 }
-
+.header-bar{
+    background-image: linear-gradient(43deg, #0a88ae, #1071a9);
+    color:white;
+}
+.navbar-start>.navbar-item, .navbar-link{
+    color:white;
+    font-weight: 600;
+}
+.navbar-item:hover{
+    font-weight: 800;
+    background: #007ea5 !important;
+    color:white !important
+}
+.has-dropdown{
+    color:#363636;
+}
 /*********************************************/
 /*******************TOOLTIP*******************/
 .tooltip::before {

@@ -1,10 +1,10 @@
-import Layout from '../../../components/layouts/Layout'
-import Form from '../../../components/form/Form'
-import { friendlyDateformat } from '../../../filters/filters'
-import { Link } from '../../../routes'
 import Router from 'next/router'
-
+import { Link } from '../../../routes'
+import Form from '../../../components/form/Form'
+import Layout from '../../../components/layouts/Layout'
+import { friendlyDateformat } from '../../../filters/filters'
 import { getAppointments } from '../../../services/appointments'
+
 import {
     addPatient, getPatient, updatePatient,
     savePatientsAddress, savePatientsPersonalInfo, savePatientsNotes,
@@ -51,6 +51,7 @@ export default class extends React.Component {
                     first_name: resp.data.first_name,
                     last_name: resp.data.last_name,
                     email: resp.data.email,
+                    picture: resp.data.picture,
                     phone_number: resp.data.phone_number,
                     is_active: resp.data.is_active
                 }
@@ -123,9 +124,10 @@ export default class extends React.Component {
         const { id, title } = this.props
 
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
+            { name: "ADEL", url: "admin", active: false,
+            title:id > 0 ? this.state.data.first_name +" "+ this.state.data.last_name : title},
             { name: "Pacientes", url: "patients", active: false },
-            { name: title, url: "", active: true }
+            { name: id > 0 ? title.substring(title.length-2,-3) : title, url: "", active: true }
         ]
 
         var form = {
@@ -189,7 +191,14 @@ export default class extends React.Component {
                 type:'checkbox',
                 helpText:'',
                 width:'is-6'
-            }],
+            },{
+                name:'picture',
+                label:'Foto de perfil',
+                type:'file',
+                helpText:'',
+                className:'archivo',
+                width:'is-12'
+            },],
             data: this.state.data,
             errors: this.state.errors
         }
@@ -408,10 +417,9 @@ export default class extends React.Component {
         }
 
         return (
-            <Layout title={ title } selectedMenu="patients" breadcrumb={breadcrumb}>
-                <div className="card">
+            <Layout title={ id > 0 ? title.substring(title.length-2,-3) : title } selectedMenu="patients" breadcrumb={breadcrumb}>
+                <div className="card form-card-100">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">{ title } <b>{ this.state.data.first_name } { this.state.data.last_name }</b></h4>
                         <div className={id?'tabs is-small':'tabs is-small hide'}>
                             <ul id="tabs">
                                 <li className={this.state.selected_tab == 1?'is-active':''} onClick={(e) => this.clickInTab(1)}><a>General</a></li>

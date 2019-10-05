@@ -1,25 +1,36 @@
 import Layout from '../../../components/layouts/Layout'
 import { Link } from '../../../routes'
-import { getPatients } from '../../../services/patients'
 import Paginacion from '../../../components/Paginacion'
+import { friendlyDateformat } from '../../../filters/filters'
+import { getPatients, deletePatient } from '../../../services/patients'
 import { hasPermission } from '../../../components/permission'
+import ModalConfirmacion from '../../../components/general/ModalConfirmacion'
 
 export default class extends React.Component{
+    permisoAgregar = 22
+    permisoEditar = 23
+    permisoEliminar = 24
+
     state = {
-        objects: [],
-        total_objects: [],
-        total_records: 0,
-        page_limit: 20,
-        texto_busqueda:null
+        objects:[],
+        total_records:0,
+        page_limit:20,
+        texto_busqueda:null,
+        textoModal:'',
+        tituloModal:'',
+        textoConfirmacion:'',
+        item:null,
+        colorModal:'is-danger'
     }
 
     async componentDidMount() {
         try {
             const req = await getPatients({ limit: this.state.page_limit})
             const objects = req.data.results
-            const total_objects = req.data.results
             const total_records = req.data.count
-            this.setState({ objects, total_objects, total_records })
+            console.log('total')
+            console.log(total_records)
+            this.setState({ objects, total_records })
         } catch (error) {
             console.log(error)
         }
@@ -39,46 +50,64 @@ export default class extends React.Component{
     }
 
     async searchValue () {
-        if (this.state.texto_busqueda == null || this.state.texto_busqueda ==''){
-            let objects = this.state.total_objects
-            this.setState({ objects })
-        }else{
-            let texto = this.state.texto_busqueda.toLowerCase()
-            let total_objetos = this.state.total_objects
-            let obj = total_objetos.find(o => o.first_name.toLowerCase().indexOf(texto) >= 0 || o.last_name.toLowerCase().indexOf(texto) >= 0)
-            try {
-                const params = { id: obj.id }
-                const req = await getPatients(params)
-                const objects = req.data.results
-                const total_records = req.data.count
-                this.setState({ objects, total_records })
+        let texto = this.state.texto_busqueda.toLowerCase()
+        try {
+            const params = { search:texto}
+            const req = await getPatients(params)
+            const objects = req.data.results
+            const total_records = req.data.count
+            this.setState({ objects, total_records })
             } catch (error) {
                 console.log(error)
             }
-        }
     }
 
     handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-          this.searchValue()
-        }
-      }
+        if (e.key === 'Enter')
+            this.searchValue()
+    }
 
     setSearchValue = (texto) => {
         let texto_busqueda = texto.target.value
         this.setState({ texto_busqueda })
     }
+
+    abrirModal = (obj) => {
+        let modalVisible = true
+        let textoConfirmacion = 'Confirmar'
+        let textoModal = '¿Estás seguro de borrar este paciente? - ' + obj.first_name + " " + obj.last_name
+        let tituloModal = 'Eliminar paciente'
+        let item = obj.id
+        this.setState({ modalVisible, textoModal, tituloModal, textoConfirmacion, item })
+      }
+
+    async eliminaItem(item){
+        let objects = this.state.objects
+        let item_index = objects.findIndex(o => o.id == item)
+        objects.splice(item_index,1)
+        await deletePatient(item)
+      }
+
+    cerrarModal = () => {
+        this.setState({ modalVisible: false });
+    }
+
     render(){
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Pacientes", url: "", active: true }
+            { 
+                name: "ADEL", url: "admin", active: false,
+                title:"PACIENTES",total:this.state.total_records },
+            { name: "Pacientes", url: "", active: true },
         ]
+        const { 
+            modalVisible, textoModal, colorModal, tituloModal, textoConfirmacion, item
+        } = this.state
+
         return (
             <Layout title="Pacientes" selectedMenu="patients" breadcrumb={ breadcrumb }>
                 <div className="card">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">Pacientes</h4>
-                        { hasPermission(40) ?
+                        {hasPermission(this.permisoAgregar)?
                         <Link route="add_patient">
                             <a className="button is-info is-pulled-left is-radiusless">
                                 <span className="icon is-small">
@@ -87,7 +116,7 @@ export default class extends React.Component{
                                 <span>Agregar</span>
                             </a>
                         </Link>
-                        : <a></a>}
+                        :<a></a>}
                         <div className="field has-addons is-pulled-right">
                             <div className="control">
                                 <input
@@ -98,7 +127,7 @@ export default class extends React.Component{
                                     placeholder="Buscar..." />
                             </div>
                             <div className="control">
-                                <button onClick={ (e) => this.searchValue() } type="button" className="button is-info is-radiusless">
+                                <button type="button" onClick={ (e) => this.searchValue() } className="button is-info is-radiusless">
                                     <span className="icon is-small">
                                         <i className="fas fa-search"></i>
                                     </span>
@@ -109,36 +138,44 @@ export default class extends React.Component{
                         <table className="table is-fullwidth is-striped is-hoverable is-bordered">
                             <thead>
                                 <tr>
+                                    <th>Imagen</th>
                                     <th>Nombre</th>
-                                    <th>Correo</th>
                                     <th>Telefono</th>
-                                    <th>Creado por</th>
+                                    <th>Fecha inicio</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                { this.state.objects.map((obj) => (
-                                    <tr key={obj.id}>
-                                        <td>{ obj.first_name } { obj.last_name }</td>
-                                        <td>{ obj.email }</td>
-                                        <td>{ obj.phone_number }</td>
-                                        <td>{ obj.user }</td>
-                                        <td>
-                                            <p className="buttons is-centered">
-                                                { hasPermission(41) ?
-                                                <Link route="edit_patient" params={{ id: obj.id }}>
-                                                    <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
-                                                        <span className="icon is-small">
-                                                            <i className="fas fa-pen"></i>
-                                                        </span>
-                                                        <span>Editar</span>
-                                                    </a>
-                                                </Link>
-                                                : <a></a>}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                )) }
+                            { this.state.objects.map((obj) => (
+                                <tr key={obj.id}>
+                                    <td><img className="img-50" src={ obj.picture }/></td>
+                                    <td>{ obj.first_name } { obj.last_name }</td>
+                                    <td>{ obj.phone_number }</td>
+                                    <td>{ friendlyDateformat(obj.date_joined)}</td>
+                                    <td>
+                                        <p className="buttons is-centered">
+                                            { hasPermission(this.permisoAgregar)?
+                                            <Link route="edit_patient" params={{ id: obj.id }}>
+                                                <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-pen"></i>
+                                                    </span>
+                                                    <span>Editar</span>
+                                                </a>
+                                            </Link>
+                                            :<a></a>}
+                                            { hasPermission(this.permisoEliminar)?
+                                            <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger is-outlined tooltip" data-tooltip="Eliminar">
+                                                <span className="icon is-small">
+                                                    <i className="fas fa-trash"></i>
+                                                </span>
+                                                <span>Eliminar</span>
+                                            </button>
+                                            :<a></a>}
+                                        </p>
+                                    </td>
+                                </tr>
+                            )) }
                             </tbody>
                         </table>
                         <div>
@@ -152,6 +189,17 @@ export default class extends React.Component{
                         </div>
                     </div>
                 </div>
+                <style jsx>{`
+                `}</style>
+                <ModalConfirmacion
+                    activo={modalVisible}
+                    titulo={tituloModal}
+                    contenido={textoModal}
+                    botonOkTexto={textoConfirmacion}
+                    color={colorModal}
+                    botonOkClick={(e) =>this.eliminaItem(item)}
+                    cerrarModal={this.cerrarModal}
+                />
             </Layout>
         )
     }

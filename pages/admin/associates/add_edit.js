@@ -226,9 +226,10 @@ export default class extends React.Component {
         const { services, selected_services, data } = this.state
 
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
+            { name: "ADEL", url: "admin", active: false,
+            title: id > 0 ? this.state.data.first_name +" "+ this.state.data.last_name : title },
             { name: "Asociados", url: "associates", active: false },
-            { name: title, url: "", active: true }
+            { name: id > 0 ? title.substring(title.length-2,-3) : title, url: "", active: true }
         ]
 
         var form = {
@@ -378,7 +379,7 @@ export default class extends React.Component {
                     { label:'Sábado', value:'6' },
                     { label:'Domingo', value:'7' }
                 ],
-                width:'is-6'
+                width:'is-4'
             },{
                 name: "start_time",
                 label: "Hora de entrada",
@@ -399,10 +400,9 @@ export default class extends React.Component {
         }
 
         return (
-            <Layout title={ title } selectedMenu="associates" breadcrumb={breadcrumb}>
+            <Layout title={ id > 0 ? title.substring(title.length-2,-3) : title } selectedMenu="associates" breadcrumb={breadcrumb}>
             <div className="card">
                 <div className="card-content">
-                    <h4 className="subtitle is-4">{ title } <b>{ this.state.data.first_name } { this.state.data.last_name }</b></h4>
                     <div className={id?'tabs is-small':'tabs is-small hide'}>
                         <ul id="tabs">
                             <li className={this.state.selected_tab == 1?'is-active':''} onClick={(e) => this.clickInTab(1)}><a>General</a></li>
@@ -509,8 +509,7 @@ export default class extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Día</th>
-                                    <th>Horario entrada</th>
-                                    <th>Horario salida</th>
+                                    <th>Horario</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -518,8 +517,7 @@ export default class extends React.Component {
                                 { this.state.dias.map((obj, index) => (
                                     <tr key={ index }>
                                         <td>{ obj.day_str }</td>
-                                        <td>{ (obj.start_time).substring(0,5) }</td>
-                                        <td>{ (obj.end_time).substring(0,5) }</td> 
+                                        <td>{ (obj.start_time).substring(0,5) } - { (obj.end_time).substring(0,5) }</td>
                                         <td>
                                             <p className="buttons is-centered">
                                                 <a onClick={ (e) => this.deleteWorkday(obj.id, index)} className="button is-small is-danger tooltip" data-tooltip="Borrar">
@@ -546,8 +544,7 @@ export default class extends React.Component {
                             titulo="error"
                             mensaje = {this.state.error_mensaje3}
                         />
-                        :<span></span>
-                    }
+                        :<span></span>}
                     </div>
                     <div className={this.state.selected_tab == 4?'':'hide'} id="tab_agenda">
                         {this.state.agenda.length > 0 ? 

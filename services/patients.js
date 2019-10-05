@@ -4,19 +4,21 @@ import Api from './api'
 
 export const getPatients = (params = {}) => Api().get('/api/patients/', { params })
 
+export const addPatient = (data) => Api().post(`/api/patients/`, data)
+
 export const getPatient = (id) => Api().get(`/api/patients/${id}`)
 
-export const getPatientPackages = (params = {}) => Api().get('/api/patient-packages/', { params })
+export const updatePatient = (id, data) => Api().put(`/api/patients/${id}/`, data)
+
+export const deletePatient = (id) => Api().delete(`/api/patients/${id}/`)
 
 export const getPatientPackage = (id) => Api().get(`/api/patient-packages/${id}`)
 
-export const getPackagesInfo = () => Api().get(`/api/patients/packages/info`)
-
-export const addPatient = (data) => Api().post(`/api/patients/`, data)
+export const getPatientPackages = (params = {}) => Api().get('/api/patient-packages/', { params })
 
 export const addPatientPackage = (data) => Api().post(`/api/patient-packages/`, data)
 
-export const updatePatient = (id, data) => Api().put(`/api/patients/${id}/`, data)
+export const getPackagesInfo = () => Api().get(`/api/patients/packages/info`)
 
 export const savePatientsAddress = (id, data) => Api().post(`/api/patients/${id}/address/`, data)
 

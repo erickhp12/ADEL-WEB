@@ -19,3 +19,5 @@ export const addPermission = (id, data) => Api().put(`/api/user/${id}/permission
 export const deletePermission = (id, permission_id) => Api().delete(`/api/users/${id}/permissions/${permission_id}/`)
 
 export const updateUser = (id, data) => Api().put(`/api/users/${id}/`, data)
+
+export const deleteUser = (id) => Api().delete(`/api/users/${id}/`)

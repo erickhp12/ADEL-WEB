@@ -1,16 +1,26 @@
-import Layout from '../../../components/layouts/Layout'
 import { Link } from '../../../routes'
-import { getBranchOffices } from '../../../services/branch_offices'
+import Layout from '../../../components/layouts/Layout'
 import Paginacion from '../../../components/Paginacion'
-import { hasPermission } from '../../../components/permission'
 import { friendlyDateformat } from '../../../filters/filters'
+import { hasPermission } from '../../../components/permission'
+import { getBranchOffices, deleteBranchOffice } from '../../../services/branch_offices'
+import ModalConfirmacion from '../../../components/general/ModalConfirmacion'
 
 export default class extends React.Component{
+    permisoAgregar = 16
+    permisoEditar = 17
+    permisoEliminar = 18
+
     state = {
         objects:[],
         total_records:0,
         page_limit:20,
-        texto_busqueda:null
+        texto_busqueda:null,
+        textoModal:'',
+        tituloModal:'',
+        textoConfirmacion:'',
+        item:null,
+        colorModal:'is-danger'
     }
 
     async componentDidMount() {
@@ -60,15 +70,41 @@ export default class extends React.Component{
         this.setState({ texto_busqueda })
     }
 
+    abrirModal = (obj) => {
+        let modalVisible = true
+        let textoConfirmacion = 'Confirmar'
+        let textoModal = '¿Estás seguro de borrar esta sucursal? - ' + obj.name
+        let tituloModal = 'Eliminar sucursal'
+        let item = obj.id
+        this.setState({ modalVisible, textoModal, tituloModal, textoConfirmacion, item })
+      }
+
+    async eliminaItem(item){
+        let objects = this.state.objects
+        let item_index = objects.findIndex(o => o.id == item)
+        objects.splice(item_index,1)
+        await deleteBranchOffice(item)
+      }
+
+    cerrarModal = () => {
+        this.setState({ modalVisible: false });
+    }
+
     render(){
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false, title:"SUCURSALES",total:this.state.total_records },
+            { name: "ADEL", url: "admin", active: false,
+            title:"SUCURSALES",total:this.state.total_records },
             { name: "Sucursales", url: "", active: true },
         ]
+        const { 
+            modalVisible, textoModal, colorModal, tituloModal, textoConfirmacion, item
+        } = this.state
+
         return (
             <Layout title="Sucursales" selectedMenu="branch_offices" breadcrumb={ breadcrumb }>
                 <div className="card">
                     <div className="card-content">
+                        {hasPermission(this.permisoAgregar)?
                         <Link route="add_branch_office">
                             <a className="button is-info is-pulled-left is-radiusless">
                                 <span className="icon is-small">
@@ -77,6 +113,7 @@ export default class extends React.Component{
                                 <span>Agregar</span>
                             </a>
                         </Link>
+                        :<a></a>}
                         <div className="field has-addons is-pulled-right">
                             <div className="control">
                                 <input
@@ -126,6 +163,14 @@ export default class extends React.Component{
                                                 </a>
                                             </Link>
                                             :<a></a>}
+                                            { hasPermission(this.permisoEliminar)?
+                                            <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger is-outlined tooltip" data-tooltip="Eliminar">
+                                                <span className="icon is-small">
+                                                    <i className="fas fa-trash"></i>
+                                                </span>
+                                                <span>Eliminar</span>
+                                            </button>
+                                            :<a></a>}
                                         </p>
                                     </td>
                                 </tr>
@@ -144,14 +189,16 @@ export default class extends React.Component{
                     </div>
                 </div>
                 <style jsx>{`
-                    .card{
-                        margin:1.5em;
-                    }
-                    .card-content {
-                        overflow-x: auto;
-                      }
-                      
                 `}</style>
+                <ModalConfirmacion
+                    activo={modalVisible}
+                    titulo={tituloModal}
+                    contenido={textoModal}
+                    botonOkTexto={textoConfirmacion}
+                    color={colorModal}
+                    botonOkClick={(e) =>this.eliminaItem(item)}
+                    cerrarModal={this.cerrarModal}
+                />
             </Layout>
         )
     }

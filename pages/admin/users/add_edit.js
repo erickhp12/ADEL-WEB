@@ -1,14 +1,20 @@
 import Layout from '../../../components/layouts/Layout'
 import Router from 'next/router'
 import Form from '../../../components/form/Form'
-import { addUser, getUser, getUserPermissions, getPermissions, addPermission, deletePermission, updateUser } from '../../../services/users'
+import {
+        addUser, getUser,
+        getUserPermissions,
+        getPermissions,
+        addPermission,
+        updateUser
+    } from '../../../services/users'
 
 
 export default class extends React.Component {
     static async getInitialProps ({ query }) {
         let id = query.id
         let title = ''
-        id ? title='Editar usuario > ' : title='Agregar usuario'
+        id ? title='Editar usuario' : title='Agregar usuario'
         return { id, title }
     }
 
@@ -24,7 +30,7 @@ export default class extends React.Component {
         errors3: {},
         errors4: {},
         errors5: {},
-        selected_tab: 1
+        selected_tab: 2
     }
 
     async componentDidMount() {
@@ -83,17 +89,11 @@ export default class extends React.Component {
     }
 
     filtraTabla () {
-        var value = document.getElementById('myInput').value
         let permisos = this.state.permisosDisponibles
-        console.log('VALOR ' + value)
         let permiso = permisos.find(o => o.name == 'Cita')
-        console.log(permisos)
         let permisosDisponibles = []
-        if (permiso != null){
-            console.log('HOLA')
+        if (permiso != null)
             permisosDisponibles.push(permiso)
-        }
-        console.log(permisosDisponibles)
         this.setState({ permisosDisponibles })
     }
 
@@ -138,7 +138,8 @@ export default class extends React.Component {
         const { id, title } = this.props
 
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
+            { name: "ADEL", url: "admin", active: false,
+            title:this.state.generalInformation.first_name +" "+ this.state.generalInformation.last_name},
             { name: "Usuarios", url: "users", active: false },
             { name: title, url: "", active: true }
         ]
@@ -217,7 +218,6 @@ export default class extends React.Component {
             <Layout title={ title } selectedMenu="users" breadcrumb={breadcrumb}>
                 <div className="card form-card-70">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">{ title } <b>{ this.state.generalInformation.first_name } { this.state.generalInformation.last_name }</b></h4>
                         <div className={id?'tabs is-small':'tabs is-small hide'}>
                             <ul id="tabs">
                                 <li className={this.state.selected_tab == 1?'is-active':''} onClick={(e) => this.clickInTab(1)}><a>General</a></li>
@@ -257,8 +257,8 @@ export default class extends React.Component {
                                         { this.state.permisosDisponibles.map((obj) => (
                                             <tr key={obj.id}>
                                                 <td>{ obj.id }</td>
-                                                <td>{ obj.name }</td>
-                                                <td>{ this.asignaNombre(obj.permission_type) }</td>
+                                                <td> { obj.name }</td>
+                                                <td> { this.asignaNombre(obj.permission_type) }</td>
                                                 <td>
                                                 {obj.active ?
                                                     <button onClick={e => this.eliminaPermiso(obj)} className='button is-small is-success'>

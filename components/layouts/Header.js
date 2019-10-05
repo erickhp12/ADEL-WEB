@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import Router from 'next/router'
 import { Link } from "../../routes"
+import { hasPermission } from '../permission'
 
 export default class extends React.Component{
+    permisoSucursales = 17
+    permisoUsuarios = 23
     state = {
         active: "0",
         selected_menu: this.props.selectedMenu,
@@ -27,7 +30,7 @@ export default class extends React.Component{
     render(){
         return (
             <div>
-                <nav className="navbar" role="navigation" aria-label="main navigation">
+                <nav className="navbar header-bar" role="navigation" aria-label="main navigation">
                     <div className="navbar-brand">
                         <a className="navbar-item" href="https://bulma.io">
                             <h1>ADEL</h1>
@@ -48,15 +51,29 @@ export default class extends React.Component{
 
                     <div id="navbarBasicExample" className={`navbar-menu ${this.state.active == "1" ? 'is-active': ''}`}>
                         <div className="navbar-start">
-                            <a className="navbar-item">Pacientes</a>
+                            {hasPermission(this.permisoSucursales)?
+                            <Link route="associates">
+                                <a className={`navbar-item ${this.isActive("associates")}`}>Asociados</a>
+                            </Link>
+                            :<span></span>}
+                            
+                            {hasPermission(this.permisoSucursales)?
+                            <Link route="patients">
+                                <a className={`navbar-item ${this.isActive("patients")}`}>Pacientes</a>
+                            </Link>
+                            :<span></span>}
+                            {hasPermission(this.permisoSucursales)?
                             <Link route="branch_offices">
                                 <a className={`navbar-item ${this.isActive("branch_offices")}`}>Sucursales</a>
                             </Link>
+                            :<span></span>}
+                            {hasPermission(this.permisoUsuarios)?
                             <Link route="users">
                                 <a className={`navbar-item ${this.isActive("users")}`}>Usuarios</a>
                             </Link>
+                            :<span></span>}
                             <div className="navbar-item has-dropdown is-hoverable">
-                                <a className="navbar-link">Reportes</a>
+                                <a className="navbar-link is-arrowless">Reportes</a>
                                 <div className="navbar-dropdown">
                                     <a className="navbar-item">About</a>
                                     <a className="navbar-item">Jobs</a>
@@ -81,7 +98,8 @@ export default class extends React.Component{
                 </nav>
                 <style jsx>{`
                     .active{
-                        color:#2db2b2;
+                        font-weight:800;
+                        border-bottom: 3px solid #CCC;
                     }
                 `}</style>
             </div>
