@@ -3,8 +3,9 @@ import Router from 'next/router'
 import Select from 'react-select'
 import Form from '../../../components/form/Form'
 import Error from '../../../components/layouts/Error'
-import { addAssociate, getAssociate, updateAssociate, getAssociateWorkDays, addAssociateWorkDays, 
-    deleteAssociateWorkDays, getAppointmentsAssociate, updateAssociateAppointmentStatus } from '../../../services/associates'
+import { addAssociate, getAssociate, updateAssociate, getAssociateWorkDays,
+    addAssociateWorkDays,deleteAssociateWorkDays, getAppointmentsAssociate,
+    updateAssociateAppointmentStatus, getSpecialties } from '../../../services/associates'
 import { getBranchOffices } from '../../../services/branch_offices'
 import { getServices } from '../../../services/services'
 import { getIncentives, payComission, addIncentiveSetting, getIncentiveSetting, updateIncentiveSetting } from '../../../services/incentives'
@@ -22,6 +23,8 @@ export default class extends React.Component {
     state = {
         services:[],
         selected_services:[],
+        specialties:[],
+        selected_specialties:[],
         branch_offices: [],
         comisiones: {},
         dias: [],
@@ -32,7 +35,8 @@ export default class extends React.Component {
         total_porcentaje_comisiones:0,
         data: {
             is_active:true,
-            services:[]
+            services:[],
+            specialties:[]
         },
         diaTrabajo:{
             day: 1,
@@ -87,9 +91,21 @@ export default class extends React.Component {
             console.log(error)
         }
 
+        //TRAE ESPECIALIDADES
+        try {
+            const req = await getSpecialties()
+            const data = req.data.results
+            let specialties = data.map(obj =>{
+                return { label: obj.name, value: obj.id }
+            })
+            this.setState({ specialties })
+        } catch (error) {
+            console.log(error)
+        }
+
         if (this.props.id){
 
-            //TAE ASOCIADOS
+            //TRAE INFORMACION DE ASOCIADO
             try {
                 const resp = await getAssociate(this.props.id)
                 const selected_services = resp.data.services
@@ -97,7 +113,11 @@ export default class extends React.Component {
                 selected_services.forEach(s => {
                     services.push(s.value)
                 })
-
+                const selected_specialties = resp.data.specialties
+                let specialties = []
+                selected_specialties.forEach(s => {
+                    specialties.push(s.value)
+                })
                 let data = {
                     id: this.props.id,
                     branch_office: resp.data.branch_office_id,
@@ -107,10 +127,10 @@ export default class extends React.Component {
                     is_active: resp.data.is_active,
                     phone_number: resp.data.phone_number,
                     services,
-                    specialty: resp.data.specialty
+                    specialties
                 }
 
-                this.setState({ data, selected_services })
+                this.setState({ data, selected_services, selected_specialties })
             } catch (error) {
                 console.log(error)
             }
@@ -166,10 +186,9 @@ export default class extends React.Component {
     }
 
     selectService = async(selected_services) => {
-
         let { data } = this.state
-
         let services = []
+
         selected_services.forEach(s => {
             services.push(s.value)
         });
@@ -177,6 +196,20 @@ export default class extends React.Component {
 
         this.setState({
             data, selected_services
+        })
+    }
+
+    selectSpecialty = async(selected_specialties) => {
+        let { data } = this.state
+        let specialties = []
+
+        selected_specialties.forEach(s => {
+            specialties.push(s.value)
+        });
+        data.specialties = specialties
+
+        this.setState({
+            data, selected_specialties
         })
     }
 
@@ -223,7 +256,7 @@ export default class extends React.Component {
 
     render(){
         const { id, title } = this.props
-        const { services, selected_services, data } = this.state
+        const { services, selected_services, specialties, selected_specialties, data } = this.state
 
         const breadcrumb = [
             { name: "ADEL", url: "admin", active: false,
@@ -240,8 +273,7 @@ export default class extends React.Component {
                         try {
                             await updateAssociate(id, values)
                             this.clickInTab(2)
-                            alertify.success('Asosciado guardado correctamente')
-                            Router.pushRoute('associates')
+                            alertify.success('Asociado guardado correctamente')
                         } catch (error) {
                             alertify.error('Error al guardar asociado')
                             const errors = error.response.data
@@ -249,10 +281,12 @@ export default class extends React.Component {
                         }
                     } else {
                         try {
-                            await addAssociate(values)
+                            const resp = await addAssociate(values)
+                            const associate_id = resp.data.id
+                            this.setState({ associate_id })
+                            Router.pushRoute('edit_associate', {id: associate_id})
+                            alertify.success('Agregado correctamente');
                             this.clickInTab(2)
-                            alertify.success('Asosciado guardado correctamente')
-                            Router.pushRoute('associates')
                         } catch (error) {
                             alertify.error('Error al agregar asociado')
                             const errors = error.response.data
@@ -263,41 +297,35 @@ export default class extends React.Component {
             },
             fields:[{
                 name:'first_name',
-                label:'Nombre(s) *',
+                label:'Nombre(s)',
                 type:'text',
                 helpText:'',
-                width:'is-6'
+                width:'is-5'
             },{
                 name:'last_name',
-                label:'Apellidos *',
+                label:'Apellidos',
                 type:'text',
                 helpText:'',
-                width:'is-6'
-            },{
-                name:'email',
-                label:'Correo electrónico *',
-                type:'text',
-                helpText:'',
-                width:'is-6'
-            },{
-                name:'phone_number',
-                label:'Número de teléfono *',
-                type:'text',
-                keyPressValidation: 'only_numbers',
-                helpText:'',
-                width:'is-6'
-            },{
-                name:'specialty',
-                label:'Especialidad *',
-                type:'text',
-                helpText:'',
-                width:'is-6'
+                width:'is-5'
             },{
                 name:'is_active',
                 label:'Activo',
                 type:'checkbox',
                 helpText:'',
-                width:'is-6'
+                width:'is-2'
+            },{
+                name:'email',
+                label:'Correo electrónico',
+                type:'text',
+                helpText:'',
+                width:'is-5'
+            },{
+                name:'phone_number',
+                label:'Número de teléfono',
+                type:'text',
+                keyPressValidation: 'only_numbers',
+                helpText:'',
+                width:'is-5'
             }],
             data: this.state.data,
             errors: this.state.errors
@@ -403,7 +431,7 @@ export default class extends React.Component {
             <Layout title={ id > 0 ? title.substring(title.length-2,-3) : title } selectedMenu="associates" breadcrumb={breadcrumb}>
             <div className="card">
                 <div className="card-content">
-                    <div className={id?'tabs is-small':'tabs is-small hide'}>
+                    <div className={id?'tabs is-small':'tabs is-small'}>
                         <ul id="tabs">
                             <li className={this.state.selected_tab == 1?'is-active':''} onClick={(e) => this.clickInTab(1)}><a>General</a></li>
                             <li className={this.state.selected_tab == 2?'is-active':''}onClick={(e) => this.clickInTab(2)}><a>Comisiones</a></li>
@@ -421,7 +449,7 @@ export default class extends React.Component {
                         >
                         <div className="columns">
                             <div className="column is-5">
-                                <label className="label-select">Servicio</label>
+                                <label className="label-select">Servicios *</label>
                                 <Select
                                     instanceId
                                     isMulti
@@ -429,6 +457,17 @@ export default class extends React.Component {
                                     value={ selected_services }
                                     onChange={ this.selectService.bind(this)}
                                     options={ services }
+                                />
+                            </div>
+                            <div className="column is-5">
+                                <label className="label-select">Especialidades *</label>
+                                <Select
+                                    instanceId
+                                    isMulti
+                                    closeMenuOnSelect={ false }
+                                    value={ selected_specialties }
+                                    onChange={ this.selectSpecialty.bind(this)}
+                                    options={ specialties }
                                 />
                             </div>
                         </div>

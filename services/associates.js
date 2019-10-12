@@ -2,6 +2,8 @@
 
 import Api from './api'
 
+export const getSpecialties = (params = {}) => Api().get('/api/specialties/', { params })
+
 export const getAssociates = (params = {}) => Api().get('/api/associates/', { params })
 
 export const getAssociate = (id) => Api().get(`/api/associates/${id}`)

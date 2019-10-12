@@ -141,7 +141,6 @@ export default class extends React.Component{
                                     <th>Nombre</th>
                                     <th>Sucursal</th>
                                     <th>Telefono</th>
-                                    <th>Especialidad</th>
                                     <th>Fecha inicio</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -153,7 +152,6 @@ export default class extends React.Component{
                                     <td>{ obj.first_name } { obj.last_name }</td>
                                     <td>{ obj.branch_office }</td>
                                     <td>{ obj.phone_number }</td>
-                                    <td>{ obj.specialty }</td>
                                     <td>{ friendlyDateformat(obj.date_joined)}</td>
                                     <td>
                                         <p className="buttons is-centered">

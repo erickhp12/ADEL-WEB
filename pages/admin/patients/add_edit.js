@@ -146,7 +146,11 @@ export default class extends React.Component {
                         }
                     } else {
                         try {
-                            const resp = await addPatient(values)
+                            let formData = new FormData()
+                            Object.keys(values).forEach((key) => {
+                                formData.append(key, values[key])
+                            })
+                            const resp = await addPatient(formData)
                             const patient_id = resp.data.id
                             this.setState({ patient_id })
                             Router.pushRoute('edit_patient', {id: patient_id})
