@@ -30,7 +30,7 @@ export default class extends React.Component {
         errors3: {},
         errors4: {},
         errors5: {},
-        selected_tab: 2
+        selected_tab: 1
     }
 
     async componentDidMount() {

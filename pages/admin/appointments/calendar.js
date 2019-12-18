@@ -4,7 +4,7 @@ import BigCalendar from "react-big-calendar"
 import moment from 'moment'
 import { getAssociates, getAppointmentsAssociate, updateAssociateAppointmentStatus } from '../../../services/associates'
 import { getAppointments, updateAppointmentStatus } from '../../../services/appointments'
-import ModalConfirmacion from '../../../components/ModalConfirmacion'
+import ModalConfirmacion from '../../../components/modalConfirmacion'
 import { friendlyFullDateformat, timeFormat } from '../../../filters/filters'
 
 import {Router} from '../../../routes'

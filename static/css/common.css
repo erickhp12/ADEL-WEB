@@ -4,22 +4,29 @@
 .card-content {
     overflow-x: auto;
   }
-.img-50{
+.img-25{
     max-width: 25px;
     max-height: 25px;
 }
-
+.img-50{
+    max-width: 50px;
+    max-height: 50px;
+}
+.img-75{
+    max-width: 75px;
+    max-height: 75px;
+    border-radius:10px;
+}
 .card-50 {
     width:50%;
     margin: auto !important;
     margin-top: 1.5em !important;
 }
 
+.list-card-header>h1{
+    margin-left:15%;
+    margin-top:5%;
+}
 .card-content-50 {
     overflow-x: auto;
-}
-
-.img-50{
-    max-width: 25px;
-    max-height: 25px;
 }

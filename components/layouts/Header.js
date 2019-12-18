@@ -56,12 +56,19 @@ export default class extends React.Component{
                                 <a className={`navbar-item ${this.isActive("associates")}`}>Asociados</a>
                             </Link>
                             :<span></span>}
-                            
+
                             {hasPermission(this.permisoSucursales)?
                             <Link route="patients">
                                 <a className={`navbar-item ${this.isActive("patients")}`}>Pacientes</a>
                             </Link>
                             :<span></span>}
+
+                            {hasPermission(this.permisoSucursales)?
+                            <Link route="appointments">
+                                <a className={`navbar-item ${this.isActive("appointments")}`}>Citas</a>
+                            </Link>
+                            :<span></span>}
+
                             {hasPermission(this.permisoSucursales)?
                             <Link route="branch_offices">
                                 <a className={`navbar-item ${this.isActive("branch_offices")}`}>Sucursales</a>

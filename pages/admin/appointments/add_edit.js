@@ -181,7 +181,13 @@ export default class extends React.Component {
         }
         this.setState({ associates, selected_associate, selected_service, selected_service_str, duration })
     }
-
+    selectPatient = async(selected_patient) => {
+        let { data } = this.state
+        data.patient = selected_patient.value
+        this.setState({
+            data
+        })
+    }
     async getAvailableDaysByAsociate (associate) {
         const resp = await getAppointmentsAssociate(associate);
         let horarios_ocupados = []
@@ -221,7 +227,7 @@ export default class extends React.Component {
 
     render() {
         const { id, title } = this.props;
-        let { associates,  selected_associate,  selected_service, services } = this.state
+        let { associates,  selected_associate, selected_patient, selected_service, services, patients } = this.state
 
         const breadcrumb = [
             { name: "ADEL", url: "admin", active: false },
@@ -261,33 +267,11 @@ export default class extends React.Component {
             },
             fields: [
                 {
-                    name: "patient",
-                    label: "Paciente",
-                    type: "select",
-                    helpText: "",
-                    id:'pacientes',
-                    width:'is-5',
-                    options: this.state.patients
-                },{
                     name: "date",
                     label: "Fecha de cita",
                     type: "datepicker",
                     helpText: "",
                     width:'is-4',
-                },{
-                    name: "start_time",
-                    label: "Inicio",
-                    type: "timepicker",
-                    helpText: "",
-                    width:'is-1',
-                    options: this.state.time_options
-                },{
-                    name: "end_time",
-                    label: "Fin",
-                    type: "timepicker",
-                    helpText: "",
-                    width:'is-1',
-                    options: this.state.time_options
                 }
             ],
             data: this.state.data,
@@ -298,113 +282,123 @@ export default class extends React.Component {
         <Layout title={title} selectedMenu="appointments" breadcrumb={breadcrumb}>
             <div className="card">
                 <div className="card-content">
-                    <h4 className="subtitle is-4">{title}</h4>
-                    <Form
-                        buttonLabel={form.button.label}
-                        onSubmit={form.button.onSubmit}
-                        fields={form.fields}
-                        data={form.data}
-                        errors={form.errors}
-                    >
-
-                    <hr/>
-                    { this.state.horarios_ocupados.length > 0 ?
-                    <div className="contenedor-horarios">
-                        <h4 className="subtitle is-12"> Horarios ocupados</h4>
-                        <article className="columns contenedor is-multiline message is-dark">
-                        { this.state.horarios_ocupados.map((obj, index) => (
-                            <div key={ index } className="column is-2 contenido message-body">
-                            { obj.hora_inicio.substring(0, 5) } - { obj.hora_fin.substring(0, 5) }
-                            </div>
-                        )) }
-                        </article>
+                    <div className="column is-4 is-offset-8">
+                    <label className="label-select">Paciente *</label>
+                        <Select
+                            instanceId
+                            closeMenuOnSelect={ true }
+                            value={ selected_patient }
+                            onChange={ this.selectPatient.bind(this)}
+                            options={ patients }
+                        />
                     </div>
-                    : <div></div>
-                    }
+                    <div className="columns is-12">
+                        <Form
+                            buttonLabel={form.button.label}
+                            onSubmit={form.button.onSubmit}
+                            fields={form.fields}
+                            data={form.data}
+                            errors={form.errors}
+                        >
 
-                    <div className="columns">
-                        <div className="column is-4">
-                            <label className="label-select">Servicio</label>
-                            <Select
-                                instanceId
-                                value={ selected_service }
-                                onChange={ this.selectService }
-                                options={ services }
-                            />
-                        </div>
-
-                        <div className="column is-4">
-                            <label className="label-select">Asociado</label>
-                            <Select
-                                instanceId
-                                value={ selected_associate }
-                                onChange={ this.selectAssociate }
-                                options={ associates }
-                            />
-                        </div>
-
-                        <div className="column is-1">
-                            <label className="label-select">Inicio</label>
-                            <Flatpickr data-enable-time
-                                value={ this.state.single_start_time }
-                                onChange={ this.selectStartTime }
-                                options={this.state.time_options}
-                                />
-                        </div>
-
-                        <div className="column is-1">
-                                <label className="label-select">Fin</label>
-                                <Flatpickr data-enable-time
-                                    value={ this.state.single_end_time }
-                                    onChange={ this.selectEndTime }
-                                    options={this.state.time_options}
-                                />
-                        </div>
-
-                        <div className="column is-1">
-                                <label className="label-select">&nbsp;</label>
-                                <button  className="button is-primary" onClick={ this.addAppointment }>Agregar</button>
-                        </div>
-                    </div>
-
-                    { this.state.data.appointments_associates.length > 0 ?
-                    <div>
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Servicio</th>
-                                    <th>Asociado</th>
-                                    <th>Hora inicio</th>
-                                    <th>Hora fin</th>
-                                    <th>Status</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            { this.state.data.appointments_associates.map((obj, index) => (
-                                <tr key={ index }>
-                                    <td>{ obj.service_str }</td>
-                                    <td>{ obj.associate_str }</td>
-                                    <td>{ (obj.start_time).substring(0,5) }</td>
-                                    <td>{ (obj.end_time).substring(0,5) }</td>
-                                    <td>{ obj.status === 'effected' ? 'efectuada' : obj.status == 'pending' ? 'pendiente': 'sin definir' }</td>
-                                    <td>
-                                        <p className="buttons is-centered">
-                                            <a onClick={ (e) => this.deleteAppointMentAssociate(index)} className="button is-small is-danger tooltip" data-tooltip="Borrar">
-                                                <span className="icon is-small">
-                                                    <i className="fas fa-trash"></i>
-                                                </span>
-                                            </a>
-                                        </p>
-                                    </td>
-                                </tr>
+                        { this.state.horarios_ocupados.length > 0 ?
+                        <div className="contenedor-horarios">
+                            <h4 className="subtitle is-12"> Horarios ocupados</h4>
+                            <article className="columns contenedor is-multiline message is-dark">
+                            { this.state.horarios_ocupados.map((obj, index) => (
+                                <div key={ index } className="column is-2 contenido message-body">
+                                { obj.hora_inicio.substring(0, 5) } - { obj.hora_fin.substring(0, 5) }
+                                </div>
                             )) }
-                            </tbody>
-                        </table>
-                    </div>
-                    : <div></div>
-                    }
-                </Form>
+                            </article>
+                        </div>
+                        : <div></div>
+                        }
+
+                        <div className="columns">
+                            <div className="column is-4">
+                                <label className="label-select">Servicio</label>
+                                <Select
+                                    instanceId
+                                    value={ selected_service }
+                                    onChange={ this.selectService }
+                                    options={ services }
+                                />
+                            </div>
+
+                            <div className="column is-4">
+                                <label className="label-select">Asociado</label>
+                                <Select
+                                    instanceId
+                                    value={ selected_associate }
+                                    onChange={ this.selectAssociate }
+                                    options={ associates }
+                                />
+                            </div>
+
+                            <div className="column is-1">
+                                <label className="label-select">Inicio</label>
+                                <Flatpickr data-enable-time
+                                    value={ this.state.single_start_time }
+                                    onChange={ this.selectStartTime }
+                                    options={this.state.time_options}
+                                    />
+                            </div>
+
+                            <div className="column is-1">
+                                    <label className="label-select">Fin</label>
+                                    <Flatpickr data-enable-time
+                                        value={ this.state.single_end_time }
+                                        onChange={ this.selectEndTime }
+                                        options={this.state.time_options}
+                                    />
+                            </div>
+
+                            <div className="column is-1">
+                                    <label className="label-select">&nbsp;</label>
+                                    <button  className="button is-primary" onClick={ this.addAppointment }>Agregar</button>
+                            </div>
+                        </div>
+
+                        { this.state.data.appointments_associates.length > 0 ?
+                        <div>
+                            <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Servicio</th>
+                                        <th>Asociado</th>
+                                        <th>Hora inicio</th>
+                                        <th>Hora fin</th>
+                                        <th>Status</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                { this.state.data.appointments_associates.map((obj, index) => (
+                                    <tr key={ index }>
+                                        <td>{ obj.service_str }</td>
+                                        <td>{ obj.associate_str }</td>
+                                        <td>{ (obj.start_time).substring(0,5) }</td>
+                                        <td>{ (obj.end_time).substring(0,5) }</td>
+                                        <td>{ obj.status === 'effected' ? 'efectuada' : obj.status == 'pending' ? 'pendiente': 'sin definir' }</td>
+                                        <td>
+                                            <p className="buttons is-centered">
+                                                <a onClick={ (e) => this.deleteAppointMentAssociate(index)} className="button is-small is-danger tooltip" data-tooltip="Borrar">
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-trash"></i>
+                                                    </span>
+                                                </a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                )) }
+                                </tbody>
+                            </table>
+                        </div>
+                        : <div></div>
+                        }
+                    </Form>
+                </div>
                 {this.state.error_horario != null ?
                     <Error
                         titulo="error"

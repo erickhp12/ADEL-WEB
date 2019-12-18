@@ -28,8 +28,6 @@ export default class extends React.Component{
             const req = await getPatients({ limit: this.state.page_limit})
             const objects = req.data.results
             const total_records = req.data.count
-            console.log('total')
-            console.log(total_records)
             this.setState({ objects, total_records })
         } catch (error) {
             console.log(error)
@@ -134,50 +132,56 @@ export default class extends React.Component{
                                 </button>
                             </div>
                         </div>
+                    </div>
 
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Imagen</th>
-                                    <th>Nombre</th>
-                                    <th>Telefono</th>
-                                    <th>Fecha inicio</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            { this.state.objects.map((obj) => (
-                                <tr key={obj.id}>
-                                    <td><img className="img-50" src={ obj.picture }/></td>
-                                    <td>{ obj.first_name } { obj.last_name }</td>
-                                    <td>{ obj.phone_number }</td>
-                                    <td>{ friendlyDateformat(obj.date_joined)}</td>
-                                    <td>
-                                        <p className="buttons is-centered">
-                                            { hasPermission(this.permisoAgregar)?
-                                            <Link route="edit_patient" params={{ id: obj.id }}>
-                                                <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
-                                                    <span className="icon is-small">
-                                                        <i className="fas fa-pen"></i>
-                                                    </span>
-                                                    <span>Editar</span>
-                                                </a>
-                                            </Link>
-                                            :<a></a>}
-                                            { hasPermission(this.permisoEliminar)?
-                                            <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger is-outlined tooltip" data-tooltip="Eliminar">
-                                                <span className="icon is-small">
-                                                    <i className="fas fa-trash"></i>
-                                                </span>
-                                                <span>Eliminar</span>
-                                            </button>
-                                            :<a></a>}
-                                        </p>
-                                    </td>
-                                </tr>
-                            )) }
-                            </tbody>
-                        </table>
+                    <div className="columns is-multiline">
+                        { this.state.objects.map((obj) => (
+                        <div key={obj.id} className="card column is-4">
+                            <div className="columns">
+                                <div className="column is-2">
+                                    <img className="img-75" src={ obj.picture }/>
+                                </div>
+                                <div className="column is-10">
+                                    <table>
+                                        <b>{ obj.first_name } { obj.last_name }</b>
+                                        <tbody>
+                                            <tr>
+                                                <td>Telefono</td>
+                                                <td>{ obj.phone_number }</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fecha de inicio</td>
+                                                <td>{ friendlyDateformat(obj.date_joined)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    { hasPermission(this.permisoEditar)?
+                                                    <Link route="edit_patient" params={{ id: obj.id }}>
+                                                    <a className="card-footer-item button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-pen"></i>
+                                                        </span>
+                                                        <span>Editar</span>
+                                                    </a>
+                                                    </Link>
+                                                :<a></a>}
+                                                </td>
+                                                <td>
+                                                    { hasPermission(this.permisoEliminar)?
+                                                    <a href="#" onClick={(e) => this.abrirModal(obj) } className="card-footer-item button is-small is-danger is-outlined tooltip">
+                                                        <span className="icon is-small is-danger">
+                                                            <i className="fas fa-trash"></i>
+                                                        </span>
+                                                        <span> Eliminar</span></a>
+                                                    :<a></a>}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        ))}
                         <div>
                             Mostrando <strong> {this.state.objects.length} </strong> de <strong> {this.state.total_records} </strong> registros.
                             <Paginacion
@@ -185,7 +189,7 @@ export default class extends React.Component{
                                 pageLimit={this.state.page_limit}
                                 pageNeighbours={1}
                                 onPageChanged={this.onPageChanged}
-                            />
+                                />
                         </div>
                     </div>
                 </div>
