@@ -49,7 +49,7 @@ export default class extends React.Component{
             <style jsx>{`
                 .main-content{
                     background: #f3f3f3;
-                    height:90vh;
+                    height:100vh;
                     position: absolute;
                     width: 100%;
                 }

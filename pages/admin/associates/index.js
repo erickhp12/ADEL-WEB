@@ -7,9 +7,9 @@ import { hasPermission } from '../../../components/permission'
 import ModalConfirmacion from '../../../components/general/ModalConfirmacion'
 
 export default class extends React.Component{
-    permisoAgregar = 22
-    permisoEditar = 23
-    permisoEliminar = 24
+    permisoAgregar = 31
+    permisoEditar = 32
+    permisoEliminar = 33
 
     state = {
         objects:[],
@@ -28,7 +28,6 @@ export default class extends React.Component{
             const req = await getAssociates({ limit: this.state.page_limit})
             const objects = req.data.results
             const total_records = req.data.count
-            console.log('TOTAL ' + total_records)
             this.setState({ objects, total_records })
         } catch (error) {
             console.log(error)
@@ -93,9 +92,8 @@ export default class extends React.Component{
 
     render(){
         const breadcrumb = [
-            { 
-                name: "ADEL", url: "admin", active: false,
-                title:"ASOCIADOS",total:this.state.total_records },
+            { name: "ADEL", url: "admin", active: false,
+            title:"ASOCIADOS",total:this.state.total_records },
             { name: "Asociados", url: "", active: true },
         ]
         const { 
@@ -152,7 +150,7 @@ export default class extends React.Component{
                                     <td>{ obj.first_name } { obj.last_name }</td>
                                     <td>{ obj.branch_office }</td>
                                     <td>{ obj.phone_number }</td>
-                                    <td>{ friendlyDateformat(obj.date_joined)}</td>
+                                    <td>{ friendlyDateformat(obj.created_at)}</td>
                                     <td>
                                         <p className="buttons is-centered">
                                             { hasPermission(this.permisoAgregar)?

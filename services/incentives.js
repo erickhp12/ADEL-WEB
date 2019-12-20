@@ -2,7 +2,7 @@
 
 import Api from './api'
 
-export const getIncentives = () => Api().get('/api/incentives/')
+export const getIncentives = (params = {}) => Api().get('/api/incentives/', { params })
 
 export const getIncentive = (id) => Api().get(`/api/incentives/${id}`)
 

@@ -138,6 +138,7 @@ export default class extends React.Component{
                                 <tr>
                                     <th>Imagen</th>
                                     <th>Nombre</th>
+                                    <th>Correo</th>
                                     <th>Telefono</th>
                                     <th>Fecha inicio</th>
                                     <th>Acciones</th>
@@ -148,6 +149,7 @@ export default class extends React.Component{
                                 <tr key={obj.id}>
                                     <td><img className="img-50" src={ obj.picture }/></td>
                                     <td>{ obj.first_name } { obj.last_name }</td>
+                                    <td>{ obj.email }</td>
                                     <td>{ obj.phone_number }</td>
                                     <td>{ friendlyDateformat(obj.date_joined)}</td>
                                     <td>

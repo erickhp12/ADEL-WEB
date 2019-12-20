@@ -281,7 +281,7 @@ export default class extends React.Component {
                         }
                     } else {
                         try {
-                            const resp = await addAssociate(values)
+                            let resp = await addAssociate(values)
                             const associate_id = resp.data.id
                             this.setState({ associate_id })
                             Router.pushRoute('edit_associate', {id: associate_id})
@@ -429,11 +429,11 @@ export default class extends React.Component {
 
         return (
             <Layout title={ id > 0 ? title.substring(title.length-2,-3) : title } selectedMenu="associates" breadcrumb={breadcrumb}>
-            <div className="card">
-                <div className="card-content">
+            <div className="card height-60">
+                <div className="card-content height-100">
                     <div className={id?'tabs is-small':'tabs is-small'}>
                         <ul id="tabs">
-                            <li className={this.state.selected_tab == 1?'is-active':''} onClick={(e) => this.clickInTab(1)}><a>General</a></li>
+                            <li className={this.state.selected_tab == 1?'is-active':''}onClick={(e) => this.clickInTab(1)}><a>General</a></li>
                             <li className={this.state.selected_tab == 2?'is-active':''}onClick={(e) => this.clickInTab(2)}><a>Comisiones</a></li>
                             <li className={this.state.selected_tab == 3?'is-active':''}onClick={(e) => this.clickInTab(3)}><a>Días de trabajo</a></li>
                             <li className={this.state.selected_tab == 4?'is-active':''}onClick={(e) => this.clickInTab(4)}><a>Agenda</a></li>
@@ -453,7 +453,7 @@ export default class extends React.Component {
                                 <Select
                                     instanceId
                                     isMulti
-                                    closeMenuOnSelect={ false }
+                                    closeMenuOnSelect={ true }
                                     value={ selected_services }
                                     onChange={ this.selectService.bind(this)}
                                     options={ services }
@@ -480,7 +480,7 @@ export default class extends React.Component {
                         :<span></span>
                     }
                     </div>
-                    <div className={this.state.selected_tab == 2?'':'hide'} id="tab_address">
+                    <div className={this.state.selected_tab == 2?'':'hide'} id="tab_comissions">
                         <Form
                             buttonLabel={ form2.button.label }
                             onSubmit={ form2.button.onSubmit }

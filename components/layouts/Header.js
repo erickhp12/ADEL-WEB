@@ -4,8 +4,12 @@ import { Link } from "../../routes"
 import { hasPermission } from '../permission'
 
 export default class extends React.Component{
-    permisoSucursales = 17
-    permisoUsuarios = 23
+    permisoAsociados = 31
+    permisoPacientes = 46
+    permisoCitas = 97
+    permisoSucursales = 16
+    permisoUsuarios = 22
+    
     state = {
         active: "0",
         selected_menu: this.props.selectedMenu,
@@ -51,19 +55,19 @@ export default class extends React.Component{
 
                     <div id="navbarBasicExample" className={`navbar-menu ${this.state.active == "1" ? 'is-active': ''}`}>
                         <div className="navbar-start">
-                            {hasPermission(this.permisoSucursales)?
+                            {hasPermission(this.permisoAsociados)?
                             <Link route="associates">
                                 <a className={`navbar-item ${this.isActive("associates")}`}>Asociados</a>
                             </Link>
                             :<span></span>}
 
-                            {hasPermission(this.permisoSucursales)?
+                            {hasPermission(this.permisoPacientes)?
                             <Link route="patients">
                                 <a className={`navbar-item ${this.isActive("patients")}`}>Pacientes</a>
                             </Link>
                             :<span></span>}
 
-                            {hasPermission(this.permisoSucursales)?
+                            {hasPermission(this.permisoCitas)?
                             <Link route="appointments">
                                 <a className={`navbar-item ${this.isActive("appointments")}`}>Citas</a>
                             </Link>

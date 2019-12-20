@@ -7,9 +7,9 @@ import { hasPermission } from '../../../components/permission'
 import ModalConfirmacion from '../../../components/general/ModalConfirmacion'
 
 export default class extends React.Component{
-    permisoAgregar = 22
-    permisoEditar = 23
-    permisoEliminar = 24
+    permisoAgregar = 46
+    permisoEditar = 47
+    permisoEliminar = 48
 
     state = {
         objects:[],

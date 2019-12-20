@@ -4,7 +4,6 @@ import Form from '../../../components/form/Form'
 import Layout from '../../../components/layouts/Layout'
 import { friendlyDateformat } from '../../../filters/filters'
 import { getAppointments } from '../../../services/appointments'
-
 import {
     addPatient, getPatient, updatePatient,
     savePatientsAddress, savePatientsPersonalInfo, savePatientsNotes,
