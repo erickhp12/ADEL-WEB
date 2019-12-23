@@ -10,6 +10,7 @@ export default class extends React.Component{
     permisoSucursales = 16
     permisoUsuarios = 22
     permisoServicios = 25
+    permisoProducto = 67
     permisoCaja = 88
     
     state = {
@@ -83,6 +84,11 @@ export default class extends React.Component{
                             {hasPermission(this.permisoCaja)?
                             <Link route="cash">
                                 <a className={`navbar-item ${this.isActive("sales")}`}>Caja</a>
+                            </Link>
+                            :<span></span>}
+                            {hasPermission(this.permisoProducto)?
+                            <Link route="products">
+                                <a className={`navbar-item ${this.isActive("products")}`}>Productos</a>
                             </Link>
                             :<span></span>}
                             {hasPermission(this.permisoServicios)?

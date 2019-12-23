@@ -63,7 +63,7 @@ export default class extends React.Component{
 
     cambiaTotalCaja = (total_caja) => {
         let data = this.state.data
-        data.total_real = parseFloat(total_caja.target.value)
+        data.total_real = total_caja.target.value
         this.setState({ data })
     }
 
