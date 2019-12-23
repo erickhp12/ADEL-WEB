@@ -28,17 +28,35 @@ class Select extends Component {
 					<p className="help is-danger" key={ index }>{ obj }</p>
 				)) }
 				<style jsx>{`
+					.is-1{
+						width:10rem;
+					}
+					.is-2{
+						width:20rem;
+					}
 					.is-3{
-						width:19rem;
+						width:30rem;
 					}
 					.is-4{
-						width:23rem;
+						width:40rem;
 					}
 					.is-5{
-						width:28rem;
+						width:50rem;
 					}
 					.is-6{
-						width:34.25rem;
+						width:60rem;
+					}
+					.is-7{
+						width:70rem;
+					}
+					.is-8{
+						width:80rem;
+					}
+					.is-9{
+						width:90rem;
+					}
+					.is-10{
+						width:100rem;
 					}
 				`}
 				</style>

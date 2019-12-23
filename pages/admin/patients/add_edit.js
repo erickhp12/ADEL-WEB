@@ -256,7 +256,7 @@ export default class extends React.Component {
                     { label:'México', value:'mexico' },
                     { label:'Estados Unidos', value:'us' }
                 ],
-                width:'is-6'
+                width:'is-5'
             }],
             data: this.state.data2,
             errors: this.state.errors2
@@ -309,7 +309,7 @@ export default class extends React.Component {
                     { label:'Viudo', value:'widowed' },
                     { label:'Otro', value:'other' }
                 ],
-                width:'is-6'
+                width:'is-5'
             },{
                 name:'scholarship',
                 label:'Escolaridad',
@@ -327,7 +327,7 @@ export default class extends React.Component {
                     { label:'Masculino', value:'male' },
                     { label:'Femenino', value:'female' }
                 ],
-                width:'is-6'
+                width:'is-5'
             },{
                 name:'religion',
                 label:'Religión',

@@ -25,7 +25,7 @@ export const timeFormat = (value) => {
 }
 
 export const friendlyDateformat = (value) => {
-    return moment(value).format('D MMMM YYYY')
+    return moment(value).format('dddd D MMMM YYYY')
 }
 
 export const friendlyFullDateformat = (value) => {
@@ -42,4 +42,14 @@ export const djangoDateFormat = (value) => {
 
 export const djangofriendlyDateformat = (value) => {
     return moment(value).format('YYYY-MM-DD HH:mm:ss')
+}
+
+Date.prototype.addHours= function(h){
+    this.setHours(this.getHours()+h);
+    return this;
+}
+
+Date.prototype.addMinutes= function(h){
+    this.setHours(this.getHours(), h);
+    return this;
 }

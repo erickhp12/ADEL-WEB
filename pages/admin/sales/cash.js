@@ -189,19 +189,24 @@ export default class extends React.Component {
         let items = data.items
         let name = this.state.appointment_name
         let price = this.state.appointment_price
+        console.log('pago')
+        console.log(price)
         let objs = []
         var i=0
         appointments.forEach(element => {
-
+            
             let obj = this.state.appointments.find(o => o.id === element)
+            console.log('obj')
+            console.log(obj)
             objs.push(obj)
+            { price ? obj.cost = price : obj.cost }
 
             if (objs[i]) {
                 const item = {
                     "sale_type": "appointment", 
                     "qty": 1,
                     "product_name": obj.patient.first_name + ' ' + obj.patient.last_name,
-                    "unit_price": price,
+                    "unit_price": obj.cost,
                     "appointment":obj.id,
                     "product": null
                 }
@@ -454,9 +459,8 @@ export default class extends React.Component {
 
         return (
             <Layout title='Caja' selectedMenu="cash">
-                <div className="card">
-                    <div className="card-content">
-
+                <div className="card height-80">
+                    <div className="card-content height-80">
                         <h4 className="subtitle is-4">Caja
                             <Link route="cash-closing">
                                 <a className="button cash-closing is-info is-outlined is-pulled-right is-radiusless">
@@ -479,7 +483,7 @@ export default class extends React.Component {
 
                         <div className="columns">
                             <div className="column is-5">
-                                <label>Vendedores</label>
+                                <label>Asociado</label>
                                 <Select
                                     instanceId
                                     isMulti
@@ -523,7 +527,7 @@ export default class extends React.Component {
                                     />
                                 </div>
                                 <div className="column is-1">
-                                    <label className="invisible">m</label>
+                                    <label className="invisible">m</label><br></br>
                                     <button className=" button is-info" onClick={() => this.searchProductCode()}>Buscar</button>
                                 </div>
                             </div>
@@ -606,7 +610,7 @@ export default class extends React.Component {
                                     />
                                 </div>
                                 <div className="column is-1">
-                                    <label className="invisible">m</label>
+                                    <label className="invisible">m</label><br></br>
                                     <button className=" button is-info" onClick={() => this.searchServiceCode()}>Buscar</button>
                                 </div>
                             </div>
@@ -690,7 +694,7 @@ export default class extends React.Component {
                                     />
                                 </div>
                                 <div className="column is-1">
-                                    <label className="invisible">m</label>
+                                    <label className="invisible">m</label><br></br>
                                     <button className=" button is-info" onClick={() => this.searchPackages()}>Buscar</button>
                                 </div>
                             </div>
@@ -784,8 +788,8 @@ export default class extends React.Component {
                                 />
                             </div>
                             <div className="column is-1">
-                                <label className="invisible">m</label>
-                                <button className=" button is-info" onClick={() => this.searchAppointments()}>Buscar</button>
+                                <label className="invisible">m</label><br></br>
+                                <button className=" button is-info" onClick={() => this.searchAppointments()}>Agregar</button>
                             </div>
                         </div>
                         { this.state.data.items.length > 0 ?

@@ -460,11 +460,11 @@ export default class extends React.Component {
                                 />
                             </div>
                             <div className="column is-5">
-                                <label className="label-select">Especialidades *</label>
+                                <label className="label-select">Especialidades</label>
                                 <Select
                                     instanceId
                                     isMulti
-                                    closeMenuOnSelect={ false }
+                                    closeMenuOnSelect={ true }
                                     value={ selected_specialties }
                                     onChange={ this.selectSpecialty.bind(this)}
                                     options={ specialties }

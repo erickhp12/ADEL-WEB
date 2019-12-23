@@ -196,7 +196,7 @@ export default class extends React.Component{
                             </div>
                             <div className="column is-2">
                                 <Link route="calendar" >
-                                        <button className="button is-pulled-right is-offset-1 is-primary is-outlined">
+                                        <button className="button is-pulled-right is-offset-1 is-primary">
                                             <span className="icon is-small">
                                                     <i className="fas fa-calendar"></i>
                                             </span>&nbsp;&nbsp;Ver calendario
@@ -204,8 +204,6 @@ export default class extends React.Component{
                                 </Link>
                             </div>
                         </div>
-
-                        
 
                         <table className="table is-fullwidth is-striped is-hoverable is-bordered">
                             <thead>

@@ -47,7 +47,11 @@ export default class extends React.Component{
     async ejecutarCorte(){
         try {
             let values = this.state.data
+            console.log('hola')
+            console.log(values)
             const resp = await addCashClosing(values)
+            console.log('respuesta')
+            console.log(resp)
             let cash_closing_id = resp.data.id
             alertify.success('Corte hecho correctamente')
             Router.pushRoute('cash-closing-detail', {id: cash_closing_id})
@@ -59,7 +63,7 @@ export default class extends React.Component{
 
     cambiaTotalCaja = (total_caja) => {
         let data = this.state.data
-        data.total_real = total_caja.target.value
+        data.total_real = parseFloat(total_caja.target.value)
         this.setState({ data })
     }
 

@@ -93,7 +93,7 @@ export default class extends React.Component{
                 label:'Categoría *',
                 type:'select',
                 helpText:'',
-                width:'is-6',
+                width:'is-5',
                 options: this.state.service_categories
             },{
                 name:'name',

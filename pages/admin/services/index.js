@@ -14,7 +14,7 @@ export default class extends React.Component{
         total_records_service_categories: 0,
         total_records_specialties: 0,
         page_limit: 20,
-        selected_tab:2
+        selected_tab:1
     }
 
     async componentDidMount() {
