@@ -37,16 +37,16 @@ export default class extends React.Component{
     }
 
     render(){
-
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Ventas", url: "", active: true }
+            { 
+            name: "ADEL", url: "admin", active: false,
+            title:"VENTAS",total:0 },
+            { name: "Ventas", url: "", active: true },
         ]
         return (
             <Layout title="Ventas" selectedMenu="sales" breadcrumb={ breadcrumb }>
                 <div className="card">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">Ventas</h4>
                         { hasPermission(85)? 
                         <Link route="cash">
                             <a className="button is-info is-pulled-left is-radiusless">

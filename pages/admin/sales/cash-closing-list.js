@@ -50,14 +50,16 @@ export default class extends React.Component{
     render(){
 
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Caja", url: "cash", active: false }
+            { 
+            name: "ADEL", url: "admin", active: false,
+            title:"Cortes",total:this.state.cortes.length },
+            { name: "Ventas", url: "sales", active: false },
+            { name: "Cortes", url: "", active: true },
         ]
         return (
             <Layout title="Cortes" selectedMenu="sales" breadcrumb={ breadcrumb }>
                 <div className="card">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">Cortes</h4>
 
                         { this.state.cortes.length > 0 ?
                             <div>

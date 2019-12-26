@@ -1,6 +1,6 @@
 import Layout from '../../../components/layouts/Layout'
 import { Link } from '../../../routes'
-import { getAppointments } from '../../../services/appointments'
+import { getAppointments, updateAppointmentStatus } from '../../../services/appointments'
 import Paginacion from '../../../components/Paginacion'
 import { friendlyDateformat, DayMonthFormat } from '../../../filters/filters'
 import ModalForm from '../../../components/ModalForm'
@@ -93,6 +93,46 @@ export default class extends React.Component{
         this.props.onDelete(this.props.id)
     }
 
+    async confirmaCita (obj) {
+        let objects = this.state.objects
+        obj.status = 'confirmed'
+        let data = {status:'confirmed'}
+        this.setState({ objects })
+        await updateAppointmentStatus(obj.id,data)
+    }
+
+    async cancelaCita (obj) {
+        let objects = this.state.objects
+        obj.status = 'canceled'
+        let data = {status:'canceled'}
+        this.setState({ objects })
+        await updateAppointmentStatus(obj.id,data)
+    }
+    async pendienteCita (obj) {
+        let objects = this.state.objects
+        obj.status = 'pending'
+        let data = {status:'pending'}
+        this.setState({ objects })
+        await updateAppointmentStatus(obj.id,data)
+    }
+    
+    mostrarOpciones = (opcion, status) => {
+        if (opcion == 'Editar' && status == 'pending')
+            return true
+        else if (opcion == 'Eliminar' && (status == 'pending' || status == 'canceled'))
+            return true
+        else if (opcion == 'Editar' && status == 'canceled')
+            return true
+        else if (opcion == 'Confirmar' && status == 'pending')
+            return true
+        else if (opcion == 'Cancelar' && status == 'confirmed')
+            return true
+        else if (opcion == 'Pagar' && status == 'confirmed')
+            return true
+        else if (opcion == 'Pendiente' && (status == 'confirmed' || status == 'canceled'))
+            return true
+    }
+
     async searchValue () {
         if (this.state.texto_busqueda == null || this.state.texto_busqueda ==''){
             let objects = this.state.total_objects
@@ -131,8 +171,9 @@ export default class extends React.Component{
 
     render(){
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Citas", url: "", active: true }
+            { name: "ADEL", url: "admin", active: false,
+            title:"CITAS",total:this.state.total_records },
+            { name: "Citas", url: "", active: true },
         ]
         return (
             <Layout title="Citas" selectedMenu="appointments" breadcrumb={ breadcrumb }>
@@ -205,7 +246,7 @@ export default class extends React.Component{
                             </div>
                         </div>
 
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                        <table className="table is-fullwidth is-bordered">
                             <thead>
                                 <tr>
                                     <th>Sucursal</th>
@@ -218,17 +259,26 @@ export default class extends React.Component{
                             </thead>
                             <tbody>
                                 { this.state.objects.map((obj) => (
-                                    <tr key={obj.id}>
+                                    <tr key={obj.id} 
+                                        className={`${obj.status == "effected" && 'status-ok'}
+                                        ${obj.status == "confirmed" && 'status-confirmed'}
+                                        ${obj.status == "canceled" && 'status-cancelled'}
+                                        ${obj.status == "pending" && 'status-pending'}`}>
                                         <td>{ obj.branch_office }</td>
                                         <td>{ obj.patient.first_name } { obj.patient.last_name }</td>
                                         <td><b>{ friendlyDateformat(obj.date) }</b> { obj.start_time.substring(0, 5) } - { obj.end_time.substring(0, 5) } </td>
-                                        <td>{ obj.status == 'effected' ? 'Efectuada':'Pendiente' }</td>
+
+                                        <td>{ obj.status == 'effected' ? 'Efectuada':
+                                            obj.status == 'pending' ? 'Pendiente' : 
+                                            obj.status == 'confirmed' ? 'Confirmada' : 
+                                            obj.status== 'canceled' ? 'Cancelada': 'Servicio'}</td>
+                                               
                                         <td>{ obj.user }</td>
                                         <td>
                                             <p className="buttons is-centered">
-                                                { hasPermission(95) ?
+                                                { hasPermission(95) && this.mostrarOpciones('Editar',obj.status) ?
                                                 <Link route="edit_appointment" params={{ id: obj.id }}>
-                                                    <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                    <a className="button is-small is-dark tooltip" data-tooltip="Editar">
                                                         <span className="icon is-small">
                                                             <i className="fas fa-pen"></i>
                                                         </span>
@@ -236,25 +286,60 @@ export default class extends React.Component{
                                                     </a>
                                                 </Link>
                                                 : <a></a>}
+                                                { hasPermission(95) && this.mostrarOpciones('Confirmar',obj.status)?
+                                                <button onClick={ (e) => this.confirmaCita(obj)} className="button is-small is-dark tooltip">
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-check"></i>
+                                                        </span>
+                                                        <span>Confirmar</span>
+                                                </button>
+                                                : <a></a>}
+                                                { hasPermission(95) && this.mostrarOpciones('Cancelar',obj.status)?
+                                                <button onClick={ (e) => this.cancelaCita(obj)} className="button is-small is-dark tooltip">
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-trash"></i>
+                                                        </span>
+                                                        <span>Cancelar</span>
+                                                </button>
+                                                : <a></a>}
+                                                { hasPermission(95) && this.mostrarOpciones('Pendiente',obj.status)?
+                                                <button onClick={ (e) => this.pendienteCita(obj)} className="button is-small is-dark tooltip">
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-trash"></i>
+                                                        </span>
+                                                        <span>Pendiente</span>
+                                                </button>
+                                                : <a></a>}
+                                                { hasPermission(96) && this.mostrarOpciones('Eliminar',obj.status) ?
+                                                <Link route="edit_appointment" params={{ id: obj.id }}>
+                                                    <a className="button is-small is-dark tooltip" data-tooltip="Eliminar">
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-trash"></i>
+                                                        </span>
+                                                        <span>Eliminar</span>
+                                                    </a>
+                                                </Link>
+                                                : <a></a>}
                                                 { obj.status == 'effected' ?
                                                 <Link route="appointment_detail" params={{ id: obj.id }}>
-                                                    <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                    <a className="button is-small is-light tooltip" data-tooltip="Editar">
                                                         <span className="icon is-small">
                                                             <i className="fas fa-pen"></i>
                                                         </span>
                                                         <span>Ver detalle</span>
                                                     </a>
                                                 </Link>
-                                                :
+                                                : <a></a>}
+                                                { hasPermission(95) && this.mostrarOpciones('Pagar',obj.status) ?
                                                 <Link route="cash">
-                                                    <a className="button is-small is-success is-outlined tooltip" data-tooltip="Editar">
+                                                    <a className="button is-small is-dark tooltip" data-tooltip="Pagar">
                                                         <span className="icon is-small">
                                                             <i className="fas fa-money-bill"></i>
                                                         </span>
-                                                        <span>Pagar cita</span>
+                                                        <span>Pagar</span>
                                                     </a>
                                                 </Link>
-                                                }
+                                                : <a></a>}
                                             </p>
                                             
                                         </td>

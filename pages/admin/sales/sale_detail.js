@@ -59,7 +59,7 @@ export default class extends React.Component{
             { name: title, url: "", active: true }
         ]
         return (
-            <Layout title="Detalle de venta" selectedMenu="reports" breadcrumb={ breadcrumb }>
+            <Layout title="Detalle de venta" selectedMenu="sales" breadcrumb={ breadcrumb }>
                 <div className="card">
                     <div className="card-content">
 

@@ -13,9 +13,9 @@ module.exports = routes()
 .add('add_service', '/admin/servicios/agregar/', 'admin/services/add_edit')
 .add('edit_service', '/admin/servicios/editar/:id/', 'admin/services/add_edit')
 //CATEGORIA DE SERVICIOS
-.add('service_categories', '/admin/categoria-de-servicio/', 'admin/service_categories/index')
-.add('add_service_category', '/admin/categoria-de-servicio/agregar/', 'admin/service_categories/add_edit')
-.add('edit_service_category', '/admin/categoria-de-servicio/editar/:id/', 'admin/service_categories/add_edit')
+.add('categories', '/admin/categorias/', 'admin/categories/index')
+.add('add_category', '/admin/categorias/agregar/', 'admin/categories/add_edit')
+.add('edit_category', '/admin/categorias/editar/:id/', 'admin/categories/add_edit')
 //ESPECIALIDADES
 .add('add_specialty', '/admin/especialidades/agregar/', 'admin/specialties/add_edit')
 .add('edit_specialty', '/admin/especialidades/editar/:id/', 'admin/specialties/add_edit')

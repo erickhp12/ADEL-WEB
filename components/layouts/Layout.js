@@ -26,6 +26,7 @@ export default class extends React.Component{
                 <link rel="stylesheet" href="/static/css/form.css" />
                 <link rel="stylesheet" href="/static/css/style.css" />
                 <link rel="stylesheet" href="/static/css/common.css" />
+                <link rel="stylesheet" href="/static/css/colors.css" />
 
                 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
@@ -43,7 +44,7 @@ export default class extends React.Component{
                     <Breadcrumb items={this.props.breadcrumb} title={this.props.title} />
                     { this.props.children }
                 </main>
-                <Footer />
+                {/* <Footer /> */}
             </div>
 
             <style jsx>{`

@@ -84,6 +84,7 @@ export default class extends React.Component{
         let item_index = objects.findIndex(o => o.id == item)
         objects.splice(item_index,1)
         await deleteAssociate(item)
+        this.setState({ total_records: objects.length})
       }
 
     cerrarModal = () => {
@@ -153,7 +154,7 @@ export default class extends React.Component{
                                     <td>{ friendlyDateformat(obj.created_at)}</td>
                                     <td>
                                         <p className="buttons is-centered">
-                                            { hasPermission(this.permisoAgregar)?
+                                            { hasPermission(this.permisoEditar)?
                                             <Link route="edit_associate" params={{ id: obj.id }}>
                                                 <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
                                                     <span className="icon is-small">

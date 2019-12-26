@@ -4,7 +4,7 @@ import { getServiceCategories } from '../../../services/service_categories'
 import Router from 'next/router'
 import Form from '../../../components/form/Form'
 
-export default class extends React.Component{    
+export default class extends React.Component{
     static async getInitialProps ({ query }) {
         let id = query.id
         let title = ''
@@ -26,7 +26,7 @@ export default class extends React.Component{
                 return { label: obj.name, value: obj.id }
             })
             service_categories.unshift({
-                label:'Seleccionar...', value:'' 
+                label:'Seleccionar...', value:''
             })
             this.setState({ service_categories })
         } catch (error) {
@@ -42,7 +42,8 @@ export default class extends React.Component{
                     category: resp.data.category,
                     description: resp.data.description,
                     duration: resp.data.duration,
-                    price: resp.data.price
+                    price: resp.data.price,
+                    currency: resp.data.currency
                 }
                 this.setState({ data })
             } catch (error) {
@@ -55,9 +56,10 @@ export default class extends React.Component{
         const { id, title } = this.props
 
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
+            { name: "ADEL", url: "admin", active: false,
+            title:id > 0 ? this.state.data.name : title},
             { name: "Servicios", url: "services", active: false },
-            { name: title, url: "", active: true }
+            { name: id > 0 ? title : title, url: "", active: true }
         ]
 
         var form = {
@@ -97,13 +99,13 @@ export default class extends React.Component{
                 options: this.state.service_categories
             },{
                 name:'name',
-                label:'Nombre *',
+                label:'Nombre del servicio *',
                 type:'text',
                 helpText:'',
                 width:'is-6'
             },{
                 name:'description',
-                label:'Descripción *',
+                label:'Descripción',
                 type:'textarea',
                 helpText:'',
                 width:'is-12'
@@ -112,14 +114,24 @@ export default class extends React.Component{
                 label:'Duración (en minutos) *',
                 type:'text',
                 helpText:'',
-                width:'is-6',
+                width:'is-4',
                 keyPressValidation: 'only_numbers'
             },{
                 name:'price',
                 label:'Precio *',
                 type:'text',
                 helpText:'',
-                width:'is-6'
+                width:'is-4'
+            },{
+                name:'currency',
+                label:'Tipo de cambio *',
+                type:'select',
+                helpText:'',
+                width:'is-2',
+                options: [
+                { label:'Seleccionar...', value:'' },
+                { label:'Pesos', value:'MXN' },
+                { label:'Dolares', value:'USD' }]
             }],
             data: this.state.data,
             errors: this.state.errors
@@ -129,7 +141,6 @@ export default class extends React.Component{
             <Layout title={ title } selectedMenu="services" breadcrumb={breadcrumb}>
                 <div className="card">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">{ title }</h4>
                         <Form
                             buttonLabel={ form.button.label }
                             onSubmit={ form.button.onSubmit }

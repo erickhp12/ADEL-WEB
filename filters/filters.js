@@ -44,6 +44,14 @@ export const djangofriendlyDateformat = (value) => {
     return moment(value).format('YYYY-MM-DD HH:mm:ss')
 }
 
+export const djangofriendlyDateStartFormat = (value) => {
+    return moment(value).format('YYYY-MM-DD 00:00:00')
+}
+
+export const djangofriendlyDatendFormat = (value) => {
+    return moment(value).format('YYYY-MM-DD 23:59:59')
+}
+
 Date.prototype.addHours= function(h){
     this.setHours(this.getHours()+h);
     return this;

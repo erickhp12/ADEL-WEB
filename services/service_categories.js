@@ -2,10 +2,12 @@
 
 import Api from './api'
 
-export const getServiceCategories = (params = {}) => Api().get('/api/services/categories/', { params })
+export const getCategories = (params = {}) => Api().get('/api/services/categories/', { params })
 
-export const getServiceCategory = (id) => Api().get(`/api/services/categories/${id}`)
+export const getCategory = (id) => Api().get(`/api/services/categories/${id}`)
 
-export const addServiceCategory = (data) => Api().post(`/api/services/categories/`, data)
+export const addCategory = (data) => Api().post(`/api/services/categories/`, data)
 
-export const updateServiceCategory = (id, data) => Api().put(`/api/services/categories/${id}/`, data)
+export const updateCategory = (id, data) => Api().put(`/api/services/categories/${id}/`, data)
+
+export const deleteCategory = (id) => Api().delete(`/api/services/categories/${id}/`)

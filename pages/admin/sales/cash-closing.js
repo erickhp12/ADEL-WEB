@@ -1,6 +1,6 @@
 import Layout from "../../../components/layouts/Layout"
 import Flatpickr from 'react-flatpickr'
-import { djangofriendlyDateformat } from '../../../filters/filters'
+import { djangofriendlyDateStartFormat, djangofriendlyDatendFormat } from '../../../filters/filters'
 import { addCashClosing, getSalesByCashClosing, getSalesByCashClosingPending } from '../../../services/sales'
 import Router from "next/router"
 
@@ -14,8 +14,8 @@ export default class extends React.Component{
         },
         data: {
             branch_office:null,
-            start_date:djangofriendlyDateformat(new Date()) ,
-            end_date:djangofriendlyDateformat(new Date()),
+            start_date:djangofriendlyDateStartFormat(new Date()) ,
+            end_date:djangofriendlyDatendFormat(new Date()),
             total_real:0,
             comment:0
         },
@@ -47,11 +47,7 @@ export default class extends React.Component{
     async ejecutarCorte(){
         try {
             let values = this.state.data
-            console.log('hola')
-            console.log(values)
             const resp = await addCashClosing(values)
-            console.log('respuesta')
-            console.log(resp)
             let cash_closing_id = resp.data.id
             alertify.success('Corte hecho correctamente')
             Router.pushRoute('cash-closing-detail', {id: cash_closing_id})
@@ -103,30 +99,31 @@ export default class extends React.Component{
     }
 
     render(){
-
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Caja", url: "cash", active: false }
+            { name: "ADEL", url: "admin", active: false,
+            title:"Nuevo corte",total:0 },
+            { name: "Ventas", url: "sales", active: false },
+            { name: "Cortes", url: "cash-closing-list", active: false },
+            { name: "Ejecutar corte", url: "", active: true },
         ]
         return (
             <Layout title="Ventas" selectedMenu="sales" breadcrumb={ breadcrumb }>
                 <div className="card">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">Ejecutar corte</h4>
-
                         <div className="columns is-multiline">
                             <div className="column is-4">
                                 <label className="label-select">Inicio</label>
                                 <Flatpickr
                                     onChange={ this.selectStartDate }
                                     options={this.state.time_options}
+                                    value={ this.state.data.start_date }
                                 />
                             </div>
 
                             <div className="column is-4">
                                 <label className="label-select">Fin</label>
                                 <Flatpickr data-enable-time
-                                    value={ this.state.end_time }
+                                    value={ this.state.data.end_date }
                                     onChange={ this.selectEndDate }
                                     options={this.state.time_options}
                                 />
@@ -159,7 +156,7 @@ export default class extends React.Component{
                             </div>
                         </div>
 
-                        { this.state.ventas.length > 0 ?
+                        {/* { this.state.ventas.length > 0 ?
                             <div>
                                 <table className="table is-fullwidth is-striped is-hoverable is-bordered">
                                     <thead>
@@ -205,7 +202,7 @@ export default class extends React.Component{
                                 <div className="div-wrapper">
                                     <p>No hay elementos en caja</p>
                                 </div>
-                            } 
+                            }  */}
                     </div>
                 </div>
             </Layout>

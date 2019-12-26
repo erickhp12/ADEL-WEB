@@ -72,8 +72,6 @@ export default class extends React.Component {
         try {
             const req = await getServices()
             const data = req.data.results
-            console.log('servicios')
-            console.log(data)
             let servicios_duracion = []
 
             data.forEach(element => {
@@ -117,10 +115,6 @@ export default class extends React.Component {
 
             try {
                 const resp = await getAppointment(this.props.id)
-                console.log('paciente')
-                console.log(resp)
-                console.log('selected_patient')
-                console.log(selected_patient)
                 let data = {
                     branch_office: localStorage.getItem('sucursal'),
                     patient: resp.data.patient_id,

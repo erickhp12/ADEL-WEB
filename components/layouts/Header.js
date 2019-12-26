@@ -12,6 +12,7 @@ export default class extends React.Component{
     permisoServicios = 25
     permisoProducto = 67
     permisoCaja = 88
+    permisoInventario = 88
     
     state = {
         active: "0",
@@ -58,57 +59,52 @@ export default class extends React.Component{
 
                     <div id="navbarBasicExample" className={`navbar-menu ${this.state.active == "1" ? 'is-active': ''}`}>
                         <div className="navbar-start">
-                            {hasPermission(this.permisoAsociados)?
+                            {hasPermission(this.permisoAsociados) &&
                             <Link route="associates">
                                 <a className={`navbar-item ${this.isActive("associates")}`}>Asociados</a>
-                            </Link>
-                            :<span></span>}
-
-                            {hasPermission(this.permisoPacientes)?
+                            </Link>}
+                            {hasPermission(this.permisoPacientes) &&
                             <Link route="patients">
                                 <a className={`navbar-item ${this.isActive("patients")}`}>Pacientes</a>
-                            </Link>
-                            :<span></span>}
+                            </Link>}
 
-                            {hasPermission(this.permisoCitas)?
+                            {hasPermission(this.permisoCitas) &&
                             <Link route="appointments">
                                 <a className={`navbar-item ${this.isActive("appointments")}`}>Citas</a>
-                            </Link>
-                            :<span></span>}
+                            </Link>}
 
-                            {hasPermission(this.permisoSucursales)?
+                            {hasPermission(this.permisoSucursales) &&
                             <Link route="branch_offices">
                                 <a className={`navbar-item ${this.isActive("branch_offices")}`}>Sucursales</a>
-                            </Link>
-                            :<span></span>}
-                            {hasPermission(this.permisoCaja)?
+                            </Link>}
+                            {hasPermission(this.permisoCaja) &&
                             <Link route="cash">
                                 <a className={`navbar-item ${this.isActive("sales")}`}>Caja</a>
-                            </Link>
-                            :<span></span>}
-                            {hasPermission(this.permisoProducto)?
+                            </Link>}
+                            {hasPermission(this.permisoInventario) &&
+                            <Link route="inventory">
+                                <a className={`navbar-item ${this.isActive("inventory")}`}>Inventario</a>
+                            </Link>}
+                            {hasPermission(this.permisoProducto) &&
                             <Link route="products">
                                 <a className={`navbar-item ${this.isActive("products")}`}>Productos</a>
-                            </Link>
-                            :<span></span>}
-                            {hasPermission(this.permisoServicios)?
+                            </Link>}
+                            {hasPermission(this.permisoServicios) &&
                             <Link route="services">
                                 <a className={`navbar-item ${this.isActive("services")}`}>Servicios</a>
-                            </Link>
-                            :<span></span>}
-                            {hasPermission(this.permisoUsuarios)?
+                            </Link>}
+                            {hasPermission(this.permisoUsuarios) &&
                             <Link route="users">
                                 <a className={`navbar-item ${this.isActive("users")}`}>Usuarios</a>
-                            </Link>
-                            :<span></span>}
+                            </Link>}
                             <div className="navbar-item has-dropdown is-hoverable">
                                 <a className="navbar-link is-arrowless">Reportes</a>
                                 <div className="navbar-dropdown">
-                                    <a className="navbar-item">About</a>
-                                    <a className="navbar-item">Jobs</a>
-                                    <a className="navbar-item">Contact</a>
+                                    <a className="navbar-item">Reporte 1</a>
+                                    <a className="navbar-item">Reporte 2</a>
+                                    <a className="navbar-item">Reporte 4</a>
                                     <hr className="navbar-divider"/>
-                                    <a className="navbar-item">Report an issue</a>
+                                    <a className="navbar-item">Reporte general</a>
                                 </div>
                             </div>
                         </div>

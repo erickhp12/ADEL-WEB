@@ -1,0 +1,12 @@
+.status-pending{
+    background: #ffff3038;
+}
+.status-ok{
+    background: #2cf7434f;
+}
+.status-cancelled{
+    background: #f1000078;
+}
+.status-confirmed{
+    background: #86f1e878;
+}

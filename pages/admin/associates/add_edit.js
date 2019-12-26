@@ -33,6 +33,7 @@ export default class extends React.Component {
         nuevo:true,
         total_comisiones:0,
         total_porcentaje_comisiones:0,
+        idAsociado:0,
         data: {
             is_active:true,
             services:[],
@@ -285,7 +286,7 @@ export default class extends React.Component {
                             const associate_id = resp.data.id
                             this.setState({ associate_id })
                             Router.pushRoute('edit_associate', {id: associate_id})
-                            alertify.success('Agregado correctamente');
+                            alertify.success('Agregado correctamente')
                             this.clickInTab(2)
                         } catch (error) {
                             alertify.error('Error al agregar asociado')
@@ -346,9 +347,11 @@ export default class extends React.Component {
                         }
                     } else {
                         try {
+                            values.associate = this.props.id
                             await addIncentiveSetting(values)
+                            Router.pushRoute('edit_associate', {id: this.props.id})
+                            alertify.success('Agregado correctamente')
                             this.clickInTab(3)
-                            alertify.success('Comisiones asignadas correctamente')
                         } catch (error) {
                             const errors2 = error.response.data
                             this.setState({ errors2 })
@@ -380,8 +383,8 @@ export default class extends React.Component {
                 label:'Guardar',
                 onSubmit: async (event, values) => {
                     try {
-                        await addAssociateWorkDays(id, values)
-                        const req = await getAssociateWorkDays(id)
+                        await addAssociateWorkDays(this.props.id, values)
+                        const req = await getAssociateWorkDays(this.props.id)
                         const dias = req.data
                         const error_mensaje3 = null
 

@@ -37,14 +37,14 @@ export default class extends React.Component{
 
     render(){
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Inventario", url: "", active: true }
+            { name: "ADEL", url: "admin", active: false,
+            title:"INENTARIO",total:0 },
+            { name: "Inventario", url: "", active: true },
         ]
         return (
             <Layout title="Inventario" selectedMenu="inventory" breadcrumb={ breadcrumb }>
                 <div className="card">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">Inventario</h4>
                         <div className="field has-addons is-pulled-right">
                             <div className="control">
                                 <input className="input is-radiusless" type="text" placeholder="Buscar..." />
@@ -88,8 +88,7 @@ export default class extends React.Component{
                                                         <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Iniciar inventario">
                                                             <span className="icon is-small">
                                                                 <i className="fas fa-file-import"></i>
-                                                            </span>import { hasPermission } from '../../../components/permission';
-
+                                                            </span>
                                                             <span>Iniciar</span>
                                                         </a>
                                                     </Link>

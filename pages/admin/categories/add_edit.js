@@ -1,14 +1,14 @@
 import Router from 'next/router'
 
 import Layout from '../../../components/layouts/Layout'
-import { addServiceCategory, getServiceCategory, updateServiceCategory } from '../../../services/service_categories'
+import { addCategory, getCategory, updateCategory } from '../../../services/service_categories'
 import Form from '../../../components/form/Form'
 
 export default class extends React.Component{    
     static async getInitialProps ({ query }) {
         let id = query.id
         let title = ''
-        id ? title='Editar categoría de servicio' : title='Agregar categoría de servicio'
+        id ? title='Editar categoría' : title='Agregar categoría'
         return { id, title }
     }
 
@@ -20,7 +20,7 @@ export default class extends React.Component{
     async componentDidMount() {
         if (this.props.id){
             try {
-                const resp = await getServiceCategory(this.props.id)
+                const resp = await getCategory(this.props.id)
                 let data = {
                     id: this.props.id,
                     name: resp.data.name
@@ -36,9 +36,10 @@ export default class extends React.Component{
         const { id, title } = this.props
 
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Categorías de Servicio", url: "service_categories", active: false },
-            { name: title, url: "", active: true }
+            { name: "ADEL", url: "admin", active: false,
+            title:id > 0 ? this.state.data.name : title},
+            { name: "Servicios", url: "services", active: false },
+            { name: id > 0 ? title : title, url: "", active: true }
         ]
 
         var form = {
@@ -47,7 +48,7 @@ export default class extends React.Component{
                 onSubmit: async (event, values) => {
                     if (id){
                         try {
-                            await updateServiceCategory(id, values)
+                            await updateCategory(id, values)
                             alertify.success('Categoria guardada correctamente')
                             Router.pushRoute('services')
                         } catch (error) {
@@ -57,7 +58,7 @@ export default class extends React.Component{
                         }
                     } else {
                         try {
-                            await addServiceCategory(values)
+                            await addCategory(values)
                             alertify.success('Categoria agregada correctamente')
                             Router.pushRoute('services')
                         } catch (error) {
@@ -80,10 +81,9 @@ export default class extends React.Component{
         }
 
         return (
-            <Layout title={ title } selectedMenu="service_categories" breadcrumb={breadcrumb}>
+            <Layout title={ title } selectedMenu="services" breadcrumb={breadcrumb}>
                 <div className="card">
                     <div className="card-content">
-                        <h4 className="subtitle is-4">{ title }</h4>
                         <Form
                             buttonLabel={ form.button.label }
                             onSubmit={ form.button.onSubmit }

@@ -93,8 +93,8 @@ export default class extends React.Component{
     render(){
         const breadcrumb = [
             { 
-                name: "ADEL", url: "admin", active: false,
-                title:"PACIENTES",total:this.state.total_records },
+            name: "ADEL", url: "admin", active: false,
+            title:"PACIENTES",total:this.state.total_records },
             { name: "Pacientes", url: "", active: true },
         ]
         const { 

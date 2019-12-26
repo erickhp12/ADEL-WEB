@@ -10,6 +10,7 @@ import { friendlyDateformat, friendlyFullDateformat } from '../../../filters/fil
 import { getServices } from '../../../services/services'
 import Ticket from '../../../components/ticket'
 import Router from 'next/router'
+import Breadcrumb from '../../../components/Breadcrumb';
 
 export default class extends React.Component {
 
@@ -448,6 +449,13 @@ export default class extends React.Component {
     }
 
     render(){
+        const breadcrumb = [
+            { 
+                name: "ADEL", url: "admin", active: false,
+                title:"CAJA",total:0 },
+                { name: "Ventas", url: "sales", active: false },
+                { name: "Cortes", url: "", active: true },
+        ]
         const {
             products_combo,
             services_combo,
@@ -458,12 +466,12 @@ export default class extends React.Component {
         } = this.state
 
         return (
-            <Layout title='Caja' selectedMenu="cash">
+            <Layout title='Caja' selectedMenu="cash" breadcrumb={ breadcrumb }>
                 <div className="card height-80">
                     <div className="card-content height-80">
-                        <h4 className="subtitle is-4">Caja
+                        <h4 className="subtitle is-4">&nbsp;
                             <Link route="cash-closing">
-                                <a className="button cash-closing is-info is-outlined is-pulled-right is-radiusless">
+                                <a className="button cash-closing is-success is-pulled-right is-radiusless">
                                     <span className="icon is-small">
                                         <i className="fas fa-money-bill"></i>
                                     </span>
@@ -476,6 +484,14 @@ export default class extends React.Component {
                                         <i className="fas fa-eye"></i>
                                     </span>
                                     <span>Ver cortes</span>
+                                </a>
+                            </Link>
+                            <Link route="sales">
+                                <a className="button is-info is-outlined is-pulled-right is-radiusless">
+                                    <span className="icon is-small">
+                                        <i className="fas fa-eye"></i>
+                                    </span>
+                                    <span>Ver ventas</span>
                                 </a>
                             </Link>
                             {/* <button onClick={(e) => ( this.abrirTicket())}>Hola</button> */}
