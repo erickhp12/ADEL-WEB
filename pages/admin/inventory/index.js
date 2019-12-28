@@ -58,7 +58,7 @@ export default class extends React.Component{
                             </div>
                         </div>
 
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                        <table className="table is-fullwidth is-striped is-hoverable">
                             <thead>
                                 <tr>
                                     <th>Sucursal</th>
@@ -73,10 +73,10 @@ export default class extends React.Component{
                                         <td>{ obj.initialized_inventory ? 'Si': 'No'}</td>
                                         <td>
                                             { hasPermission(67) ?
-                                            <p className="buttons is-centered">
+                                            <p className="buttons">
                                                 { obj.initialized_inventory ? 
                                                     <Link route="inventory_branch_office" params={{ id: obj.id }}>
-                                                        <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Ajustar inventario">
+                                                        <a className="button is-small is-primary tooltip" data-tooltip="Ajustar inventario">
                                                             <span className="icon is-small">
                                                                 <i className="fas fa-file-signature"></i>
                                                             </span>
@@ -85,7 +85,7 @@ export default class extends React.Component{
                                                     </Link>
                                                     :
                                                     <Link route="inventory_branch_office" params={{ id: obj.id }}>
-                                                        <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Iniciar inventario">
+                                                        <a className="button is-small is-info tooltip" data-tooltip="Iniciar inventario">
                                                             <span className="icon is-small">
                                                                 <i className="fas fa-file-import"></i>
                                                             </span>

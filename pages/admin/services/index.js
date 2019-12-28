@@ -238,7 +238,7 @@ export default class extends React.Component{
                                 </div>
                             </div>
 
-                            <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                            <table className="table is-fullwidth is-striped is-hoverable">
                                 <thead>
                                     <tr>
                                         <th>Categoria</th>
@@ -260,10 +260,10 @@ export default class extends React.Component{
                                             <td>{ obj.currency }</td>
                                             <td>{ obj.user }</td>
                                             <td>
-                                                <div className="buttons is-centered">
+                                                <div className="buttons">
                                                     { hasPermission(this.permisoEditarServicio)?
                                                     <Link route="edit_service" params={{ id: obj.id }}>
-                                                        <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                        <a className="button is-small is-primary tooltip" data-tooltip="Editar">
                                                             <span className="icon is-small">
                                                                 <i className="fas fa-pen"></i>
                                                             </span>
@@ -272,7 +272,7 @@ export default class extends React.Component{
                                                     </Link>
                                                     :<a></a>}
                                                     { hasPermission(this.permisoEliminarServicio)?
-                                                    <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger is-outlined tooltip" data-tooltip="Eliminar">
+                                                    <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger tooltip" data-tooltip="Eliminar">
                                                         <span className="icon is-small">
                                                             <i className="fas fa-trash"></i>
                                                         </span>
@@ -324,7 +324,7 @@ export default class extends React.Component{
                                 </div>
                             </div>
 
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                        <table className="table is-fullwidth is-striped is-hoverable">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -338,10 +338,10 @@ export default class extends React.Component{
                                     <td>{ obj.name }</td>
                                     <td>{ obj.user }</td>
                                     <td>
-                                        <div className="buttons is-centered">
+                                        <div className="buttons">
                                         { hasPermission(this.permisoEditarCategoria)?
                                             <Link route="edit_category" params={{ id: obj.id }}>
-                                                <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                <a className="button is-small is-primary tooltip" data-tooltip="Editar">
                                                     <span className="icon is-small">
                                                       <i className="fas fa-pen"></i>
                                                     </span>
@@ -350,7 +350,7 @@ export default class extends React.Component{
                                             </Link>
                                         :<a></a>}
                                         { hasPermission(this.permisoEliminarCategoria)?
-                                            <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger is-outlined tooltip" data-tooltip="Eliminar">
+                                            <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger tooltip" data-tooltip="Eliminar">
                                                 <span className="icon is-small">
                                                     <i className="fas fa-trash"></i>
                                                 </span>
@@ -402,7 +402,7 @@ export default class extends React.Component{
                                 </div>
                             </div>
 
-                            <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                            <table className="table is-fullwidth is-striped is-hoverable">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
@@ -414,10 +414,10 @@ export default class extends React.Component{
                                         <tr key={obj.id}>
                                             <td>{ obj.name }</td>
                                             <td>
-                                                <p className="buttons is-centered">
+                                                <p className="buttons">
                                                 { hasPermission(this.permisoEditarEspecialidad)?
                                                 <Link route="edit_specialty" params={{ id: obj.id }}>
-                                                    <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                    <a className="button is-small is-primary tooltip" data-tooltip="Editar">
                                                         <span className="icon is-small">
                                                             <i className="fas fa-pen"></i>
                                                         </span>
@@ -426,7 +426,7 @@ export default class extends React.Component{
                                                 </Link>
                                                 :<a></a>}
                                                 { hasPermission(this.permisoEliminarEspecialidad)?
-                                                <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger is-outlined tooltip" data-tooltip="Eliminar">
+                                                <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger tooltip" data-tooltip="Eliminar">
                                                     <span className="icon is-small">
                                                         <i className="fas fa-trash"></i>
                                                     </span>

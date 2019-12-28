@@ -69,7 +69,7 @@ export default class extends React.Component{
                             </div>
                         </div>
 
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                        <table className="table is-fullwidth is-striped is-hoverable">
                             <thead>
                                 <tr>
                                     <th>Codigo</th>
@@ -87,10 +87,10 @@ export default class extends React.Component{
                                         <td>{ currencyformat(parseFloat(obj.price)) }</td>
                                         <td>{ obj.user }</td>
                                         <td>
-                                            <p className="buttons is-centered">
+                                            <p className="buttons">
                                                 { hasPermission(65) ?
                                                 <Link route="edit_product" params={{ id: obj.id }}>
-                                                    <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                    <a className="button is-small is-primary tooltip" data-tooltip="Editar">
                                                         <span className="icon is-small">
                                                             <i className="fas fa-pen"></i>
                                                         </span>

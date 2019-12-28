@@ -133,7 +133,7 @@ export default class extends React.Component{
                             </div>
                         </div>
 
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                        <table className="table is-fullwidth is-striped is-hoverable">
                             <thead>
                                 <tr>
                                     <th>Imagen</th>
@@ -153,10 +153,10 @@ export default class extends React.Component{
                                     <td>{ obj.phone_number }</td>
                                     <td>{ friendlyDateformat(obj.created_at)}</td>
                                     <td>
-                                        <p className="buttons is-centered">
+                                        <p className="buttons">
                                             { hasPermission(this.permisoEditar)?
                                             <Link route="edit_associate" params={{ id: obj.id }}>
-                                                <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                <a className="button is-small is-primary tooltip" data-tooltip="Editar">
                                                     <span className="icon is-small">
                                                         <i className="fas fa-pen"></i>
                                                     </span>
@@ -165,7 +165,7 @@ export default class extends React.Component{
                                             </Link>
                                             :<a></a>}
                                             { hasPermission(this.permisoEliminar)?
-                                            <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger is-outlined tooltip" data-tooltip="Eliminar">
+                                            <button onClick={(e) => this.abrirModal(obj) } className="button is-small is-danger tooltip" data-tooltip="Eliminar">
                                                 <span className="icon is-small">
                                                     <i className="fas fa-trash"></i>
                                                 </span>

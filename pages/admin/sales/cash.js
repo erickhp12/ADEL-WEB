@@ -537,7 +537,7 @@ export default class extends React.Component {
                                     <Select
                                         instanceId
                                         isMulti
-                                        closeMenuOnSelect={false}
+                                        closeMenuOnSelect={true}
                                         onChange={ this.selectProduct }
                                         options={ products_combo }
                                     />
@@ -620,7 +620,7 @@ export default class extends React.Component {
                                     <Select
                                         instanceId
                                         isMulti
-                                        closeMenuOnSelect={false}
+                                        closeMenuOnSelect={true}
                                         onChange={ this.selectService }
                                         options={ services_combo }
                                     />
