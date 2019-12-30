@@ -511,7 +511,7 @@ export default class extends React.Component {
                         </div> 
                         <div className={this.state.selected_tab == 6?'':'hide'} id="tab_appointments">
                         { this.state.citas.length > 0 ?
-                            <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                            <table className="table is-fullwidth is-striped is-hoverable ">
                                 <thead>
                                     <tr>
                                         <th>Sucursal</th>
@@ -531,9 +531,9 @@ export default class extends React.Component {
                                         <td>{ (obj.end_time).substring(0,5) }</td>
                                         <td>{ obj.status == 'effected' ? 'Efectuada':'Pendiente' }</td>
                                         <td>
-                                            <p className="buttons is-centered">
+                                            <p className="buttons ">
                                                 <Link route="edit_appointment" params={{ id: obj.id }}>
-                                                    <a className="button is-small is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                    <a className="button is-small is-primary tooltip" data-tooltip="Editar">
                                                         <span className="icon is-small">
                                                             <i className="fas fa-pen"></i>
                                                         </span>

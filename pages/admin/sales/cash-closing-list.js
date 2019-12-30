@@ -52,7 +52,7 @@ export default class extends React.Component{
         const breadcrumb = [
             { 
             name: "ADEL", url: "admin", active: false,
-            title:"Cortes",total:this.state.cortes.length },
+            title:"CORTES",total:this.state.cortes.length },
             { name: "Ventas", url: "sales", active: false },
             { name: "Cortes", url: "", active: true },
         ]
@@ -63,7 +63,7 @@ export default class extends React.Component{
 
                         { this.state.cortes.length > 0 ?
                             <div>
-                                <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                                <table className="table is-fullwidth is-striped is-hoverable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -86,12 +86,12 @@ export default class extends React.Component{
                                             <td>{ currencyformat(parseFloat(item.total_real)) }</td>
                                             <td>
                                                 <Link route="cash-closing-detail" params={{ id: item.id }}>
-                                                    <p className="control buttons is-centered">
-                                                        <a className="button is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                    <p className="control buttons">
+                                                        <a className="button is-primary tooltip" data-tooltip="Editar">
                                                         <span className="icon is-small">
                                                             <i className="fas fa-eye"></i>
                                                         </span>
-                                                        <span>Ver</span>
+                                                        <span>Ver detalle</span>
                                                         </a>
                                                     </p>
                                                 </Link>

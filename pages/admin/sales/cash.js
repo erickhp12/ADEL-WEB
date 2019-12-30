@@ -451,10 +451,9 @@ export default class extends React.Component {
     render(){
         const breadcrumb = [
             { 
-                name: "ADEL", url: "admin", active: false,
-                title:"CAJA",total:0 },
-                { name: "Ventas", url: "sales", active: false },
-                { name: "Cortes", url: "", active: true },
+            name: "ADEL", url: "admin", active: false, title:"CAJA",total:0 },
+            { name: "Ventas", url: "sales", active: false },
+            { name: "Caja", url: "", active: true },
         ]
         const {
             products_combo,
@@ -467,49 +466,10 @@ export default class extends React.Component {
 
         return (
             <Layout title='Caja' selectedMenu="cash" breadcrumb={ breadcrumb }>
-                <div className="card height-80">
-                    <div className="card-content height-80">
-                        <h4 className="subtitle is-4">&nbsp;
-                            <Link route="cash-closing">
-                                <a className="button cash-closing is-success is-pulled-right is-radiusless">
-                                    <span className="icon is-small">
-                                        <i className="fas fa-money-bill"></i>
-                                    </span>
-                                    <span>Realizar corte</span>
-                                </a>
-                            </Link>
-                            <Link route="cash-closing-list">
-                                <a className="button is-info is-outlined is-pulled-right is-radiusless">
-                                    <span className="icon is-small">
-                                        <i className="fas fa-eye"></i>
-                                    </span>
-                                    <span>Ver cortes</span>
-                                </a>
-                            </Link>
-                            <Link route="sales">
-                                <a className="button is-info is-outlined is-pulled-right is-radiusless">
-                                    <span className="icon is-small">
-                                        <i className="fas fa-eye"></i>
-                                    </span>
-                                    <span>Ver ventas</span>
-                                </a>
-                            </Link>
-                            {/* <button onClick={(e) => ( this.abrirTicket())}>Hola</button> */}
-                        </h4>
-
-                        <div className="columns">
-                            <div className="column is-5">
-                                <label>Asociado</label>
-                                <Select
-                                    instanceId
-                                    isMulti
-                                    onChange={ this.selectAssociate }
-                                    options={ associates_combo }
-                                />
-                            </div>
-
-                            <div className='column is-6 is-offset-1 tabs is-small'>
-                                <br></br>
+                <div className="card height-90">
+                    <div className="card-content height-100">
+                        <div className="columns is-multiline">
+                            <div className='column is-12 tabs is-small'>
                                 <div className="columns">
                                 <ul id="tabs">
                                     <li className={`column is-3 ${this.state.selected_tab == "1" && 'is-active'}`} onClick={(e) => this.clickInTab(1)}>
@@ -527,193 +487,205 @@ export default class extends React.Component {
                                 </ul>
                                 </div>
                             </div>
-                        </div>
+                        
+                            <div className="column is-3">
+                                <label>Asociado</label>
+                                <Select
+                                    instanceId
+                                    isMulti
+                                    onChange={ this.selectAssociate }
+                                    options={ associates_combo }
+                                />
+                            </div>
 
                         {/* SECCION PRODUCTOS */}
-                        <div className={this.state.selected_tab == 1?'':'hide'} id="tab_general">
-                            <div className="columns">
-                                <div className="column is-10">
-                                    <label>Productos</label>
-                                    <Select
-                                        instanceId
-                                        isMulti
-                                        closeMenuOnSelect={true}
-                                        onChange={ this.selectProduct }
-                                        options={ products_combo }
-                                    />
-                                </div>
-                                <div className="column is-1">
-                                    <label className="invisible">m</label><br></br>
-                                    <button className=" button is-info" onClick={() => this.searchProductCode()}>Buscar</button>
-                                </div>
-                            </div>
-
-                            <div>
-                                <table className="table is-fullwidth is-striped is-hoverable is-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Tipo de venta</th>
-                                            <th>Producto</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio</th>
-                                            <th>Total</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        { this.state.data.items.map((item, index) => (
-                                            <tr key={ index }>
-                                                <td>{ index + 1 }</td>
-                                                <td>{ item.sale_type == 'product' ? 'Producto':item.sale_type == 'package' ? 'Paquete':item.sale_type == 'appointment' ? 'Cita': 'Servicio'}</td>
-                                                <td>{ item.product_name }</td>
-                                                { item.sale_type != 'product' ? <td>No aplica</td>:
-                                                <td className="sesiones">
-                                                    <input className="minus" type="button" disabled={ this.state.num_sessions == 1 } onClick={(e) => this.changeProductQty('-',index)} value="-" />
-                                                    <input className="qty" type="text" value={ item.qty } disabled onChange={(e) => this.changeProductQty('-',index)} />
-                                                    <input className="plus" type="button" onClick={(e) => this.changeProductQty('+',index)} value="+" />
-                                                </td>
-                                                }
-                                                <td>$ { item.unit_price }</td>
-                                                <td>{ item.qty * item.unit_price }</td>
-                                                <td>
-                                                <p className="buttons is-centered">
-                                                    <a onClick={ (e) => this.deleteProduct(index)} className="button is-small is-danger is-outlined tooltip" data-tooltip="Borrar">
-                                                        <span className="icon is-small">
-                                                            <i className="fas fa-trash"></i>
-                                                        </span>
-                                                    </a>
-                                                </p>
-                                                </td>
-                                            </tr>
-                                        )) }
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Venta total</th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th>${ this.state.total }</th>
-                                            <th>
-                                                <p className="buttons is-centered">
-                                                    <a onClick={ (e) => this.deleteProducts()} className="button is-small is-danger is-outlined tooltip" data-tooltip="Borrar">
-                                                        <span className="icon is-small">
-                                                            <i className="fas fa-trash"></i>
-                                                        </span>
-                                                    </a>
-                                                </p>
-                                            </th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                <button className="button is-info"  onClick={() => this.cobrar() }>Cobrar</button>
-                            </div>
+                        <div className={this.state.selected_tab == 1?'column is-7':'hide'} id="tab_general">
+                            <label>Productos</label>
+                            <Select
+                                instanceId
+                                isMulti
+                                closeMenuOnSelect={true}
+                                onChange={ this.selectProduct }
+                                options={ products_combo }
+                            />
                         </div>
 
-                        {/* SECCION SERVICIOS */}
-                        <div className={this.state.selected_tab == 2?'':'hide'} id="tab_servicios">
-                            <div className="columns">
-                                <div className="column is-10">
-                                    <label>Servicios</label>
-                                    <Select
-                                        instanceId
-                                        isMulti
-                                        closeMenuOnSelect={true}
-                                        onChange={ this.selectService }
-                                        options={ services_combo }
-                                    />
-                                </div>
-                                <div className="column is-1">
-                                    <label className="invisible">m</label><br></br>
-                                    <button className=" button is-info" onClick={() => this.searchServiceCode()}>Buscar</button>
-                                </div>
-                            </div>
+                        <div className={this.state.selected_tab == 2?'column is-7':'hide'} id="tab_servicios">
+                            <label>Servicios</label>
+                            <Select
+                                instanceId
+                                isMulti
+                                closeMenuOnSelect={true}
+                                onChange={ this.selectService }
+                                options={ services_combo }
+                            />
+                        </div>
 
-                            <div>
-                                <table className="table is-fullwidth is-striped is-hoverable is-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Tipo de venta</th>
-                                            <th>Servicio</th>
-                                            <th>Precio</th>
-                                            <th>Pago</th>
-                                            <th>Total</th>
-                                            <th>Acciones</th>
+                        <div className={this.state.selected_tab == 3?'column is-7':'hide'} id="tab_paquetes">
+                            <label>Paquetes</label>
+                            <Select
+                                instanceId
+                                isMulti
+                                closeMenuOnSelect={false}
+                                onChange={ this.selectPackage }
+                                options={ packages_combo }
+                            />
+                        </div>
+                        <div className={this.state.selected_tab == 4?'column is-6':'hide'} id="tab_appointments">
+                            <label>Cita</label>
+                            <Select
+                                instanceId
+                                isMulti
+                                closeMenuOnSelect={true}
+                                onChange={ this.selectAppointments }
+                                options={ appointments_combo }
+                            />
+                        </div>
+                        <div className={this.state.selected_tab == 4?'column is-1':'hide'} id="tab_appointments">
+                            <label>Precio</label>
+                            <input
+                                type="text"
+                                className="input"
+                                onChange={ this.changeAppointmentPrice }
+                            />
+                        </div>
+
+                        <div className="column is-2">
+                            <label className="invisible">m</label><br></br>
+                            { this.state.selected_tab == 1 && <button className=" button is-info" onClick={() => this.searchProductCode()}>Buscar</button>}
+                            {this.state.selected_tab == 2 && <button className=" button is-info" onClick={() => this.searchServiceCode()}>Buscar</button>}
+                            {this.state.selected_tab == 3 && <button className=" button is-info" onClick={() => this.searchPackages()}>Buscar</button>}
+                            {this.state.selected_tab == 4 && <button className=" button is-info" onClick={() => this.searchAppointments()}>Buscar</button>}
+                        </div>
+                        <div className={this.state.selected_tab == 1?'column is-12':'hide'} id="tab_general">
+                            <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tipo de venta</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Total</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    { this.state.data.items.map((item, index) => (
+                                        <tr key={ index }>
+                                            <td>{ index + 1 }</td>
+                                            <td>{ item.sale_type == 'product' ? 'Producto':item.sale_type == 'package' ? 'Paquete':item.sale_type == 'appointment' ? 'Cita': 'Servicio'}</td>
+                                            <td>{ item.product_name }</td>
+                                            { item.sale_type != 'product' ? <td>No aplica</td>:
+                                            <td className="sesiones">
+                                                <input className="minus" type="button" disabled={ this.state.num_sessions == 1 } onClick={(e) => this.changeProductQty('-',index)} value="-" />
+                                                <input className="qty" type="text" value={ item.qty } disabled onChange={(e) => this.changeProductQty('-',index)} />
+                                                <input className="plus" type="button" onClick={(e) => this.changeProductQty('+',index)} value="+" />
+                                            </td>
+                                            }
+                                            <td>$ { item.unit_price }</td>
+                                            <td>{ item.qty * item.unit_price }</td>
+                                            <td>
+                                            <p className="buttons is-centered">
+                                                <a onClick={ (e) => this.deleteProduct(index)} className="button is-small is-danger is-outlined tooltip" data-tooltip="Borrar">
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-trash"></i>
+                                                    </span>
+                                                </a>
+                                            </p>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        { this.state.data.items.map((item, index) => (
-                                            <tr key={ index }>
-                                                <td>{ index + 1 }</td>
-                                                <td>{ item.sale_type == 'product' ? 'Producto':item.sale_type == 'package' ? 'Paquete':item.sale_type == 'appointment'? 'Cita': 'Servicio'}</td>
-                                                <td>{ item.product_name }</td>
-                                                <td>$ { item.unit_price }</td>
-                                                <td onClick={(e) => this.selectIndex(index)}>
-                                                    <input
-                                                        type="text"
-                                                        className="input"
-                                                        onChange={ this.changeServicePayment }
-                                                        value = { item.unit_price}>
-                                                    </input>
-                                                </td>
-                                                <td>{ item.qty * item.unit_price }</td>
-                                                <td>
-                                                <p className="buttons is-centered">
-                                                    <a onClick={ (e) => this.deleteProduct(index)} className="button is-small is-danger is-outlined tooltip" data-tooltip="Borrar">
-                                                        <span className="icon is-small">
-                                                            <i className="fas fa-trash"></i>
-                                                        </span>
-                                                    </a>
-                                                </p>
-                                                </td>
-                                            </tr>
-                                        )) }
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Venta total</th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th>${ this.state.total }</th>
-                                            <th>
-                                                <p className="buttons is-centered">
-                                                    <a onClick={ (e) => this.deleteProducts()} className="button is-small is-danger is-outlined tooltip" data-tooltip="Borrar">
-                                                        <span className="icon is-small">
-                                                            <i className="fas fa-trash"></i>
-                                                        </span>
-                                                    </a>
-                                                </p>
-                                            </th>
+                                    )) }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Venta total</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>${ this.state.total }</th>
+                                        <th>
+                                            <p className="buttons is-centered">
+                                                <a onClick={ (e) => this.deleteProducts()} className="button is-small is-danger is-outlined tooltip" data-tooltip="Borrar">
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-trash"></i>
+                                                    </span>
+                                                </a>
+                                            </p>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                        {/* SECCION SERVICIOS */}
+                        <div className={this.state.selected_tab == 2?'column is-12':'hide'} id="tab_servicios">
+                            <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tipo de venta</th>
+                                        <th>Servicio</th>
+                                        <th>Precio</th>
+                                        <th>Pago</th>
+                                        <th>Total</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    { this.state.data.items.map((item, index) => (
+                                        <tr key={ index }>
+                                            <td>{ index + 1 }</td>
+                                            <td>{ item.sale_type == 'product' ? 'Producto':item.sale_type == 'package' ? 'Paquete':item.sale_type == 'appointment'? 'Cita': 'Servicio'}</td>
+                                            <td>{ item.product_name }</td>
+                                            <td>$ { item.unit_price }</td>
+                                            <td onClick={(e) => this.selectIndex(index)}>
+                                                <input
+                                                    type="text"
+                                                    className="input"
+                                                    onChange={ this.changeServicePayment }
+                                                    value = { item.unit_price}>
+                                                </input>
+                                            </td>
+                                            <td>{ item.qty * item.unit_price }</td>
+                                            <td>
+                                            <p className="buttons is-centered">
+                                                <a onClick={ (e) => this.deleteProduct(index)} className="button is-small is-danger is-outlined tooltip" data-tooltip="Borrar">
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-trash"></i>
+                                                    </span>
+                                                </a>
+                                            </p>
+                                            </td>
                                         </tr>
-                                    </tfoot>
-                                </table>
-                                <button className="button is-info"  onClick={() => this.cobrar() }>Cobrar</button>
-                            </div>
+                                    )) }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Venta total</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>${ this.state.total }</th>
+                                        <th>
+                                            <p className="buttons is-centered">
+                                                <a onClick={ (e) => this.deleteProducts()} className="button is-small is-danger is-outlined tooltip" data-tooltip="Borrar">
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-trash"></i>
+                                                    </span>
+                                                </a>
+                                            </p>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
 
                         {/* SECCION PAQUETES */}
                         <div className={this.state.selected_tab == 3?'':'hide'} id="tab_packages">
-                            <div className="columns">
-                                <div className="column is-10">
-                                    <label>Paquetes</label>
-                                    <Select
-                                        instanceId
-                                        isMulti
-                                        closeMenuOnSelect={false}
-                                        onChange={ this.selectPackage }
-                                        options={ packages_combo }
-                                    />
-                                </div>
-                                <div className="column is-1">
-                                    <label className="invisible">m</label><br></br>
-                                    <button className=" button is-info" onClick={() => this.searchPackages()}>Buscar</button>
-                                </div>
-                            </div>
                             <div>
                                 <table className="table is-fullwidth is-striped is-hoverable is-bordered">
                                     <thead>
@@ -778,36 +750,11 @@ export default class extends React.Component {
                                         </tr>
                                     </tfoot>
                                 </table>
-                                <button className="button is-info"  onClick={() => this.cobrar() }>Cobrar</button>
                             </div>
                         </div>
 
                         {/* SECCION CITAS */}
                         <div className={this.state.selected_tab == 4?'':'hide'} id="tab_appointments">
-                        <div className="columns">
-                            <div className="column is-8">
-                                <label>Cita</label>
-                                <Select
-                                    instanceId
-                                    isMulti
-                                    closeMenuOnSelect={true}
-                                    onChange={ this.selectAppointments }
-                                    options={ appointments_combo }
-                                />
-                            </div>
-                            <div className="column is-2">
-                                <label>Precio</label>
-                                <input
-                                    type="text"
-                                    className="input"
-                                    onChange={ this.changeAppointmentPrice }
-                                />
-                            </div>
-                            <div className="column is-1">
-                                <label className="invisible">m</label><br></br>
-                                <button className=" button is-info" onClick={() => this.searchAppointments()}>Agregar</button>
-                            </div>
-                        </div>
                         { this.state.data.items.length > 0 ?
                             <div>
                                 <table className="table is-fullwidth is-striped is-hoverable is-bordered">
@@ -975,11 +922,11 @@ export default class extends React.Component {
                                 border-bottom-color: #ffffff;
                             }
                             .selected {
-                                background: #d8d8d896;
-                                border-radius: 9px;
+                                border: 2px solid #1e9dee;
+                                color: white;
+                                border-radius: 5px;
                             }
                             .is-active a {
-                                border-bottom-color: #ffffff;
                                 color: #ffffff;
                             }
                             .cash-closing {

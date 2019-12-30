@@ -32,14 +32,14 @@ export default class extends React.Component{
 
     selectStartDate = (selected_start_date) => {
         let data = this.state.data
-        let start_date = djangofriendlyDateformat(selected_start_date[0])
+        let start_date = djangofriendlyDateStartFormat(selected_start_date[0])
         data.start_date = start_date
         this.setState({ data })
     }
 
     selectEndDate = (selected_end_date) => {
         let data = this.state.data
-        let end_date = djangofriendlyDateformat(selected_end_date[0])
+        let end_date = djangofriendlyDatendFormat(selected_end_date[0])
         data.end_date = end_date
         this.setState({ data })
     }

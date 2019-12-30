@@ -85,7 +85,7 @@ export default class extends React.Component{
                                 <span>Ver cortes</span>
                             </a>
                         </Link>
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                        <table className="table is-fullwidth is-striped is-hoverable">
                             <thead>
                                 <tr>
                                     <th>Sucursal</th>
@@ -105,12 +105,12 @@ export default class extends React.Component{
                                         <td>{ obj.user }</td>
                                         <td>
                                             <Link route="sale_detail" params={{ id: obj.id }}>
-                                                <p className="control buttons is-centered">
-                                                    <a className="button is-primary is-outlined tooltip" data-tooltip="Editar">
+                                                <p className="control buttons">
+                                                    <a className="button is-primary tooltip" data-tooltip="Editar">
                                                     <span className="icon is-small">
                                                         <i className="fas fa-eye"></i>
                                                     </span>
-                                                    <span>Ver</span>
+                                                    <span>Ver detalle</span>
                                                     </a>
                                                 </p>
                                             </Link>

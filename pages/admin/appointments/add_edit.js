@@ -284,9 +284,10 @@ export default class extends React.Component {
     } = this.state;
 
     const breadcrumb = [
-      { name: "ADEL", url: "admin", active: false },
-      { name: "Citas", url: "appointments", active: false },
-      { name: title, url: "", active: true }
+        { name: "ADEL", url: "admin", active: false,
+        title: id > 0 ? "EDITAR CITA": title },
+        { name: "Citas", url: "appointments", active: false },
+        { name: id > 0 ? title : title, url: "", active: true }
     ];
 
     var form = {
@@ -325,14 +326,14 @@ export default class extends React.Component {
           label: "Fecha de cita",
           type: "datepicker",
           helpText: "",
-          width: "is-4"
+          width: "is-8"
         },
         {
           name: "start_time",
           label: "Hora",
           type: "timepicker",
           helpText: "",
-          width: "is-2",
+          width: "is-4",
           options: this.state.time_options
         }
       ],
@@ -343,7 +344,8 @@ export default class extends React.Component {
     return (
       <Layout title={title} selectedMenu="appointments" breadcrumb={breadcrumb}>
         <div className="card height-80">
-          <div className="card-content height-100">
+          <div className="card-content height-100 columns is-multiline">
+            <div className="column is-4">
             <Form
               buttonLabel={form.button.label}
               onSubmit={form.button.onSubmit}
@@ -351,8 +353,8 @@ export default class extends React.Component {
               data={form.data}
               errors={form.errors}
             >
-              <div className="columns">
-                <div className="column is-4">
+              <div className="columns is-multiline">
+                <div className="column is-12">
                   <label className="label-select">Paciente *</label>
                   <Select
                     instanceId
@@ -362,28 +364,8 @@ export default class extends React.Component {
                     options={patients}
                   />
                 </div>
-              </div>
-              {this.state.horarios_ocupados.length > 0 ? (
-                <div className="contenedor-horarios">
-                  <h4 className="subtitle is-12"> Horarios ocupados</h4>
-                  <article className="columns contenedor is-multiline message is-dark">
-                    {this.state.horarios_ocupados.map((obj, index) => (
-                      <div
-                        key={index}
-                        className="column is-2 contenido message-body"
-                      >
-                        {obj.hora_inicio.substring(0, 5)} -{" "}
-                        {obj.hora_fin.substring(0, 5)}
-                      </div>
-                    ))}
-                  </article>
-                </div>
-              ) : (
-                <div></div>
-              )}
 
-              <div className="columns">
-                <div className="column is-4">
+                <div className="column is-12">
                   <label className="label-select">Servicio</label>
                   <Select
                     instanceId
@@ -393,7 +375,7 @@ export default class extends React.Component {
                   />
                 </div>
 
-                <div className="column is-4">
+                <div className="column is-12">
                   <label className="label-select">Asociado</label>
                   <Select
                     instanceId
@@ -403,9 +385,8 @@ export default class extends React.Component {
                   />
                 </div>
 
-                <div className="column is-4">
+                <div className="column is-12">
                   <label className="label-select">&nbsp;</label>
-                  <br></br>
                   <button
                     className="button is-primary"
                     onClick={this.addAppointment}
@@ -413,9 +394,12 @@ export default class extends React.Component {
                     Agregar
                   </button>
                 </div>
-              </div>
 
-              {this.state.data.appointments_associates.length > 0 ? (
+                </div>
+              </Form>
+            </div>
+            <div className="column is-8">
+            {this.state.data.appointments_associates.length > 0 ? (
                 <div>
                   <table className="table is-fullwidth is-striped is-hoverable is-bordered">
                     <thead>
@@ -467,12 +451,28 @@ export default class extends React.Component {
               ) : (
                 <div></div>
               )}
-            </Form>
-            {this.state.error_horario != null ? (
-              <Error titulo="error" mensaje={this.state.error_horario} />
-            ) : (
-              <span></span>
-            )}
+            </div>
+            <div className="column is-12">
+            {this.state.horarios_ocupados.length > 0 ? (
+                <div className="contenedor-horarios">
+                  <h4 className="subtitle is-12"> Horarios ocupados</h4>
+                  <article className="columns contenedor is-multiline message is-dark">
+                    {this.state.horarios_ocupados.map((obj, index) => (
+                      <div
+                        key={index}
+                        className="column is-2 contenido message-body"
+                      >
+                        {obj.hora_inicio.substring(0, 5)} -{" "}
+                        {obj.hora_fin.substring(0, 5)}
+                      </div>
+                    ))}
+                  </article>
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </div>
+            {this.state.error_horario != null && ( <Error titulo="error" mensaje={this.state.error_horario} />)}
             <style jsx>
               {`
                 .table {

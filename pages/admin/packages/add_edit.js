@@ -146,6 +146,7 @@ export default class extends React.Component{
     }
 
     changeProtocol(index, sel_ser_index, service_id){
+        console.log('hola')
         let data = this.state.data
         let sessions = data.sessions
         let temp = this.state.temp
@@ -226,6 +227,7 @@ export default class extends React.Component{
     }
 
     changeSessions(value){
+        console.log('holaaa')
         let data = this.state.data
         let num_sessions = this.state.num_sessions
         let sessions = data.sessions
@@ -271,9 +273,9 @@ export default class extends React.Component{
         const { id, title } = this.props
 
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Paquetes", url: "packages", active: false },
-            { name: title, url: "", active: true }
+            { name: "ADEL", url: "admin", active: false,
+            title:"PAQUETES",total:this.state.total_records },
+            { name: "Paquetes", url: "", active: true },
         ]
 
         var form = {
@@ -378,7 +380,7 @@ export default class extends React.Component{
 
                     <div className="sesiones">
                         <input type="button" disabled={ this.state.num_sessions == 1 } onClick={(e) => this.changeSessions('-')} value="-" />
-                        <input type="text" value={ this.state.num_sessions } />
+                        <input type="text" defaultValue={ this.state.num_sessions } />
                         <input type="button" onClick={(e) => this.changeSessions('+')} value="+" />
 
                         <select name="service_selected" onChange={(e) => this.handleChange(e)}>
@@ -418,9 +420,9 @@ export default class extends React.Component{
                                     { this.state.selected_services.map((sel_ser, sel_ser_index) => (
                                         <td key={ sel_ser_index}>
                                             { this.state.temp[index][sel_ser_index] == 0 ?
-                                                <i className="far fa-square" onClick={(e) => this.changeProtocol(index, sel_ser_index, sel_ser.id)}></i>
+                                            <i className="far fa-square" onClick={(e) => this.changeProtocol(index, sel_ser_index, sel_ser.id)}></i>
                                             :
-                                                <i className="fas fa-square" onClick={(e) => this.changeProtocol(index, sel_ser_index, sel_ser.id)}></i>
+                                            <i className="fas fa-square" onClick={(e) => this.changeProtocol(index, sel_ser_index, sel_ser.id)}></i>
                                             }
                                         </td>
                                     )) }

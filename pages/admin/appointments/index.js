@@ -246,7 +246,7 @@ export default class extends React.Component{
                             </div>
                         </div>
 
-                        <table className="table is-fullwidth is-bordered">
+                        <table className="table is-fullwidth">
                             <thead>
                                 <tr>
                                     <th>Sucursal</th>
@@ -275,7 +275,7 @@ export default class extends React.Component{
                                                
                                         <td>{ obj.user }</td>
                                         <td>
-                                            <p className="buttons is-centered">
+                                            <p className="buttons">
                                                 { hasPermission(95) && this.mostrarOpciones('Editar',obj.status) ?
                                                 <Link route="edit_appointment" params={{ id: obj.id }}>
                                                     <a className="button is-small is-dark tooltip" data-tooltip="Editar">

@@ -9,7 +9,7 @@ import { addAssociate, getAssociate, updateAssociate, getAssociateWorkDays,
 import { getBranchOffices } from '../../../services/branch_offices'
 import { getServices } from '../../../services/services'
 import { getIncentives, payComission, addIncentiveSetting, getIncentiveSetting, updateIncentiveSetting } from '../../../services/incentives'
-import { friendlyDateformat } from '../../../filters/filters'
+import { friendlyDateformat,currencyformat } from '../../../filters/filters'
 
 export default class extends React.Component {
 
@@ -432,7 +432,7 @@ export default class extends React.Component {
 
         return (
             <Layout title={ id > 0 ? title.substring(title.length-2,-3) : title } selectedMenu="associates" breadcrumb={breadcrumb}>
-            <div className="card height-60">
+            <div className="card height-80">
                 <div className="card-content height-100">
                     <div className={id?'tabs is-small':'tabs is-small'}>
                         <ul id="tabs">
@@ -493,7 +493,7 @@ export default class extends React.Component {
                         />
                         <br></br>
                         <h4 className="subtitle is-4">Comisiones</h4>
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                        <table className="table is-fullwidth is-striped is-hoverable">
                             <thead>
                                 <tr>
                                     <th>Porcentaje</th>
@@ -508,7 +508,7 @@ export default class extends React.Component {
                                 { this.state.incentivos.map((obj) => (
                                 <tr key={obj.pk}>
                                     <td>{ parseInt(obj.percentage) }%</td>
-                                    <td>${ obj.total }</td>
+                                    <td>{ currencyformat(parseFloat(obj.total ))}</td>
                                     <td>${ obj.amount }</td>
                                     <td>{ obj.comment }</td>
                                     <td>{ friendlyDateformat(obj.created_at) }</td>
@@ -517,7 +517,7 @@ export default class extends React.Component {
                                             <span>Pagado</span>
                                         </button>
                                     :
-                                    <button onClick={ (e) => this.pagarComision(obj) } className="button is-small is-success is-outlined tooltip" data-tooltip="Pagar">
+                                    <button onClick={ (e) => this.pagarComision(obj) } className="button is-small is-success tooltip" data-tooltip="Pagar">
                                         <span className="icon is-small">
                                             <i className="fas fa-money-bill-alt"></i>
                                         </span>
@@ -530,8 +530,8 @@ export default class extends React.Component {
                             <tfoot>
                                 <tr>
                                     <td><b> Total </b></td>
-                                    <td><b> ${ this.state.total_comisiones}</b></td>
-                                    <td><b> ${ this.state.total_porcentaje_comisiones } </b></td>
+                                    <td><b>{ currencyformat(parseFloat(this.state.total_comisiones ))}</b></td>
+                                    <td><b>{ currencyformat(parseFloat(this.state.total_porcentaje_comisiones )) } </b></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -590,7 +590,7 @@ export default class extends React.Component {
                     </div>
                     <div className={this.state.selected_tab == 4?'':'hide'} id="tab_agenda">
                         {this.state.agenda.length > 0 ? 
-                        <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                        <table className="table is-fullwidth is-striped is-hoverable">
                             <thead>
                                 <tr>
                                     <th>Paciente</th>
@@ -611,14 +611,14 @@ export default class extends React.Component {
                                         <td>{ obj.status == 'effected' ? 'Efectuada' : obj.status === 'canceled' ? 'Cancelada':'Pendiente' }</td>
                                         <td>
                                             { obj.status === 'pending' || obj.status === 'canceled' ?
-                                            <a onClick={ (e) => this.updateAppointmentStatus(obj.id, obj.status, index)} className="button is-small is-success is-outlined tooltip" data-tooltip="Efectuar">
+                                            <a onClick={ (e) => this.updateAppointmentStatus(obj.id, obj.status, index)} className="button is-small is-success tooltip" data-tooltip="Efectuar">
                                                 <span className="icon is-small">
                                                     <i className="fas fa-check"></i>
                                                 </span>
                                                 <span>Efectuar</span>
                                             </a>
                                         :
-                                            <a onClick={ (e) => this.updateAppointmentStatus(obj.id, obj.status, index)} className="button is-small is-danger is-outlined tooltip" data-tooltip="Cancelar">
+                                            <a onClick={ (e) => this.updateAppointmentStatus(obj.id, obj.status, index)} className="button is-small is-danger tooltip" data-tooltip="Cancelar">
                                                 <span className="icon is-small">
                                                     <i className="fas fa-check"></i>
                                                 </span>

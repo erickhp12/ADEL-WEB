@@ -1,6 +1,6 @@
 import Layout from '../../../components/layouts/Layout'
 import { addService, getService, updateService } from '../../../services/services'
-import { getServiceCategories } from '../../../services/service_categories'
+import { getCategories } from '../../../services/service_categories'
 import Router from 'next/router'
 import Form from '../../../components/form/Form'
 
@@ -20,7 +20,7 @@ export default class extends React.Component{
 
     async componentDidMount() {
         try {
-            const req = await getServiceCategories()
+            const req = await getCategories()
             const data = req.data.results
             let service_categories = data.map(obj =>{
                 return { label: obj.name, value: obj.id }

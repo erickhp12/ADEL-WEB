@@ -54,8 +54,9 @@ export default class extends React.Component{
 
     render(){
         const breadcrumb = [
-            { name: "ADEL", url: "admin", active: false },
-            { name: "Paquetes", url: "", active: true }
+            { name: "ADEL", url: "admin", active: false,
+            title:"PAQUETES",total:this.state.total_records },
+            { name: "Paquetes", url: "", active: true },
         ]
         return (
             <Layout title="Paquetes" selectedMenu="packages" breadcrumb={ breadcrumb }>

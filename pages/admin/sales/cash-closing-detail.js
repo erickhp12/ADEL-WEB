@@ -106,7 +106,7 @@ export default class extends React.Component{
                         { this.state.ventas.length > 0 ?
                             <div>
                                 <h4 className="subtitle is-4">Ventas</h4>
-                                <table className="table is-fullwidth is-striped is-hoverable is-bordered">
+                                <table className="table is-fullwidth is-striped is-hoverable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
