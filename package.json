@@ -22,7 +22,7 @@
   "homepage": "https://github.com/ventamovil/ADEL-web#readme",
   "dependencies": {
     "alertifyjs": "^1.11.2",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "bulma": "^0.7.5",
     "next": "^7.0.2",
     "next-routes": "^1.4.2",
